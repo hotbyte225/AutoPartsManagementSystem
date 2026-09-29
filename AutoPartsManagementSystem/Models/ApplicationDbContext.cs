@@ -6,15 +6,12 @@ namespace AutoPartsManagementSystem.Models
 {
     public class ApplicationDbContext : IdentityDbContext<ApplicationUser, IdentityRole, string>
     {
-        public ApplicationDbContext(
-            DbContextOptions<ApplicationDbContext> options) 
-            : base(options)
-        {
-        }
+        public DbSet<Product> Products { get; set; }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options)
-        {
-            public DbSet<Product> Products { get; set; }
+        { 
+            
         }
+       
     }
    
 }
