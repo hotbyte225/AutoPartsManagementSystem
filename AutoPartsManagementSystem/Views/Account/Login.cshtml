@@ -1,0 +1,29 @@
+@{
+    ViewBag.Title = "Sign in";
+    Layout = "_AuthLayout";
+}
+<form asp-controller="Account" asp-action="Login" method="post" class="auth-card">
+    <div class="brand"><b>AP</b></div>
+    <h1>Sign in</h1>
+    <div class="muted">Welcome back! Enter your account details.</div>
+
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger py-2 small"></div>
+
+    <div class="mb-3">
+        <label class="form-label" for="Email">Email or username</label>
+        <input class="form-control" id="Email" name="Email" autocomplete="username" placeholder="admin@autoparts.uz" required>
+    </div>
+    <div class="mb-3">
+        <div class="d-flex justify-content-between"><label class="form-label" for="Password">Password</label><a href="#" class="small">Forgot password?</a></div>
+        <div class="pw">
+            <input class="form-control" id="Password" name="Password" type="password" autocomplete="current-password" placeholder="Your password" required>
+            <button type="button">Show</button>
+        </div>
+    </div>
+    <div class="form-check mb-4">
+        <input class="form-check-input" type="checkbox" id="RememberMe" name="RememberMe" value="true" checked>
+        <label class="form-check-label" for="RememberMe">Remember me</label>
+    </div>
+    <button type="submit" class="btn btn-primary w-100">Sign in</button>
+    <p class="text-center small text-secondary mt-3 mb-0">No account yet? <a asp-action="Register" class="fw-semibold">Register</a></p>
+</form>

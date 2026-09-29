@@ -1,0 +1,54 @@
+@{
+    ViewBag.Title = "Settings";
+}
+<div class="page">
+    <div>
+        <h1>Settings</h1>
+        <div class="muted">Store and system configuration</div>
+    </div>
+</div>
+
+<div class="settings" data-tabs-scope>
+    <nav data-tabs>
+        <button type="button" class="active" data-tab="general">⚙ General</button>
+        <button type="button" data-tab="store">▦ Store</button>
+        <button type="button" data-tab="notify">✉ Notifications</button>
+        <button type="button" data-tab="security">🔒 Security</button>
+    </nav>
+    <div>
+        <form asp-action="SaveGeneral" method="post" data-pane="general" class="show">
+            <h3>General</h3>
+            <div class="form-grid">
+                <div class="full"><label class="form-label" for="appName">Application name</label><input class="form-control" id="appName" name="AppName" value="AutoParts Management System"></div>
+                <div><label class="form-label" for="currency">Currency</label><select class="form-select" id="currency" name="Currency"><option>UZS</option><option>USD</option></select></div>
+                <div><label class="form-label" for="pageSize">Rows per page</label><select class="form-select" id="pageSize" name="PageSize"><option>10</option><option selected>25</option><option>50</option></select></div>
+                <div class="full"><label class="form-label" for="lang">Language</label><select class="form-select" id="lang" name="Language"><option>O'zbekcha</option><option>Русский</option><option selected>English</option></select></div>
+            </div>
+            <div class="form-foot"><button type="submit" class="btn btn-primary">Save Changes</button></div>
+        </form>
+        <form asp-action="SaveStore" method="post" data-pane="store">
+            <h3>Store</h3>
+            <div class="form-grid">
+                <div class="full"><label class="form-label" for="storeName">Store name</label><input class="form-control" id="storeName" name="StoreName" value="AutoParts Chilonzor"></div>
+                <div><label class="form-label" for="storePhone">Phone</label><input class="form-control" id="storePhone" name="Phone" value="+998 71 200 00 00"></div>
+                <div><label class="form-label" for="minStock">Default min. stock</label><input class="form-control" id="minStock" name="MinStock" type="number" value="10"></div>
+                <div class="full"><label class="form-label" for="storeAddr">Address</label><input class="form-control" id="storeAddr" name="Address" value="Tashkent, Chilonzor district"></div>
+            </div>
+            <div class="form-foot"><button type="submit" class="btn btn-primary">Save Changes</button></div>
+        </form>
+        <form asp-action="SaveNotifications" method="post" data-pane="notify">
+            <h3>Notifications</h3>
+            <div class="form-check form-switch mb-2"><input class="form-check-input" type="checkbox" id="n1" name="LowStockEmail" value="true" checked><label class="form-check-label" for="n1">Email me when a product reaches minimum stock</label></div>
+            <div class="form-check form-switch mb-2"><input class="form-check-input" type="checkbox" id="n2" name="DailyReport" value="true" checked><label class="form-check-label" for="n2">Send daily sales report at 20:00</label></div>
+            <div class="form-check form-switch"><input class="form-check-input" type="checkbox" id="n3" name="NewUserAlert" value="true"><label class="form-check-label" for="n3">Alert me when a new user is added</label></div>
+            <div class="form-foot"><button type="submit" class="btn btn-primary">Save Changes</button></div>
+        </form>
+        <form asp-action="SaveSecurity" method="post" data-pane="security">
+            <h3>Security</h3>
+            <div class="form-check form-switch mb-2"><input class="form-check-input" type="checkbox" id="s1" name="LockoutEnabled" value="true" checked><label class="form-check-label" for="s1">Lock account after 5 failed sign-ins</label></div>
+            <div class="form-check form-switch mb-3"><input class="form-check-input" type="checkbox" id="s2" name="ForcePasswordChange" value="true"><label class="form-check-label" for="s2">Require password change every 90 days</label></div>
+            <div style="max-width:220px"><label class="form-label" for="s3">Session timeout (minutes)</label><input class="form-control" id="s3" name="SessionTimeout" type="number" value="30"></div>
+            <div class="form-foot"><button type="submit" class="btn btn-primary">Save Changes</button></div>
+        </form>
+    </div>
+</div>

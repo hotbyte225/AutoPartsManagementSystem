@@ -1,0 +1,34 @@
+@{
+    ViewBag.Title = "Orders";
+}
+<div class="page">
+    <div>
+        <h1>Orders</h1>
+        <div class="muted">86 orders this month</div>
+    </div>
+    <a asp-controller="Sales" asp-action="Index" class="btn btn-primary btn-sm">+ New Order</a>
+</div>
+
+<div class="tablebox">
+    <div class="toolbar">
+        <input class="form-control" data-filter="#ordersTable" placeholder="Search invoice or customer..." aria-label="Search orders">
+        <select class="form-select" aria-label="Status"><option>All statuses</option><option>Paid</option><option>Pending</option><option>Processing</option><option>Cancelled</option></select>
+        <input class="form-control" type="date" aria-label="Date" style="max-width:170px">
+    </div>
+    <div class="table-responsive">
+        <table class="table" id="ordersTable">
+            <thead><tr><th>Invoice</th><th>Customer</th><th>Items</th><th class="right">Amount (UZS)</th><th>Payment</th><th>Status</th><th>Date</th><th></th></tr></thead>
+            <tbody>
+                <tr><td><a class="link" asp-action="Details" asp-route-id="1048">#INV-1048</a></td><td>Azizbek Karimov</td><td class="mono">3</td><td class="num right">1,250,000</td><td class="muted">Cash</td><td><span class="badge ok">Paid</span></td><td class="muted">Today 16:42</td><td><a asp-action="Details" asp-route-id="1048" class="icon-btn view" title="View">›</a></td></tr>
+                <tr><td><a class="link" asp-action="Details" asp-route-id="1047">#INV-1047</a></td><td>Auto Service Pro</td><td class="mono">8</td><td class="num right">3,870,000</td><td class="muted">Bank transfer</td><td><span class="badge ok">Paid</span></td><td class="muted">Today 15:18</td><td><a asp-action="Details" asp-route-id="1047" class="icon-btn view" title="View">›</a></td></tr>
+                <tr><td><a class="link" asp-action="Details" asp-route-id="1046">#INV-1046</a></td><td>Sardor Jabborov</td><td class="mono">2</td><td class="num right">960,000</td><td class="muted">Card</td><td><span class="badge warn">Pending</span></td><td class="muted">Today 12:05</td><td><a asp-action="Details" asp-route-id="1046" class="icon-btn view" title="View">›</a></td></tr>
+                <tr><td><a class="link" asp-action="Details" asp-route-id="1045">#INV-1045</a></td><td>Rustam Yo'ldoshev</td><td class="mono">5</td><td class="num right">4,310,000</td><td class="muted">Cash</td><td><span class="badge info">Processing</span></td><td class="muted">Yesterday 18:30</td><td><a asp-action="Details" asp-route-id="1045" class="icon-btn view" title="View">›</a></td></tr>
+                <tr><td><a class="link" asp-action="Details" asp-route-id="1044">#INV-1044</a></td><td>Umid Abdullayev</td><td class="mono">1</td><td class="num right">1,300,000</td><td class="muted">Card</td><td><span class="badge bad">Cancelled</span></td><td class="muted">Yesterday 11:12</td><td><a asp-action="Details" asp-route-id="1044" class="icon-btn view" title="View">›</a></td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="pager">
+        <span>Showing 1–5 of 86</span>
+        <nav><a href="#">‹</a><a href="#" class="on">1</a><a href="#">2</a><a href="#">3</a><a href="#">›</a></nav>
+    </div>
+</div>

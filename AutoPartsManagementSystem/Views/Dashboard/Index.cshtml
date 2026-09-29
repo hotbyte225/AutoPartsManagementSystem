@@ -1,0 +1,62 @@
+@{
+    ViewBag.Title = "Dashboard";
+}
+<div class="page">
+    <div>
+        <h1>Dashboard</h1>
+        <div class="muted">Overview of your auto parts business</div>
+    </div>
+    <a asp-controller="Sales" asp-action="Index" class="btn btn-primary btn-sm">+ New Sale</a>
+</div>
+
+<div class="stats">
+    <div class="stat"><label>Total Products</label><strong>1,248</strong><span class="up">↑ 8.2% vs last month</span></div>
+    <div class="stat"><label>Today's Sales</label><strong>4.85M</strong><span class="up">↑ 12.5% vs yesterday</span></div>
+    <div class="stat"><label>Orders</label><strong>86</strong><span class="up">↑ 5.4% this week</span></div>
+    <div class="stat"><label>Low Stock</label><strong>17</strong><span class="down">Requires attention</span></div>
+</div>
+
+<div class="grid">
+    <div class="card">
+        <div class="card-head">
+            <h3>Sales Overview</h3>
+            <div class="legend"><span><i style="background:#bfdbfe"></i>Last week</span><span><i style="background:#3b82f6"></i>This week</span></div>
+        </div>
+        <div class="bars pairs">
+            <div class="bar" style="height:52%"></div><div class="bar" style="height:70%"></div>
+            <div class="bar" style="height:62%"></div><div class="bar" style="height:78%"></div>
+            <div class="bar" style="height:43%"></div><div class="bar" style="height:60%"></div>
+            <div class="bar" style="height:72%"></div><div class="bar" style="height:88%"></div>
+            <div class="bar" style="height:48%"></div><div class="bar" style="height:65%"></div>
+            <div class="bar" style="height:80%"></div><div class="bar" style="height:92%"></div>
+            <div class="bar" style="height:65%"></div><div class="bar" style="height:83%"></div>
+        </div>
+        <div class="labels"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div>
+    </div>
+
+    <div class="card">
+        <div class="card-head">
+            <h3>Low Stock Products</h3>
+            <a asp-controller="Warehouse" asp-action="Index" class="small fw-semibold">View all</a>
+        </div>
+        <div class="product" style="margin:15px 0"><div class="pic">🔧</div><span>Brake Pad Set</span><span class="badge bad ms-auto">3 left</span></div>
+        <div class="product" style="margin:15px 0"><div class="pic">⚙</div><span>Oil Filter</span><span class="badge warn ms-auto">6 left</span></div>
+        <div class="product" style="margin:15px 0"><div class="pic">🛞</div><span>Front Wheel Hub</span><span class="badge bad ms-auto">2 left</span></div>
+        <div class="product" style="margin:15px 0 0"><div class="pic">🔋</div><span>Car Battery 60Ah</span><span class="badge warn ms-auto">5 left</span></div>
+    </div>
+</div>
+
+<div class="tablebox mt-3">
+    <div class="tablehead">Recent Sales <a asp-controller="Orders" asp-action="Index">View all orders</a></div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead><tr><th>Invoice</th><th>Customer</th><th>Amount</th><th>Status</th><th>Date</th></tr></thead>
+            <tbody>
+                <tr><td><a class="link" asp-controller="Orders" asp-action="Details" asp-route-id="1048">#INV-1048</a></td><td>Azizbek Karimov</td><td class="num">1,250,000 UZS</td><td><span class="badge ok">Paid</span></td><td class="muted">Today 16:42</td></tr>
+                <tr><td><a class="link" asp-controller="Orders" asp-action="Details" asp-route-id="1047">#INV-1047</a></td><td>Auto Service Pro</td><td class="num">3,870,000 UZS</td><td><span class="badge ok">Paid</span></td><td class="muted">Today 15:18</td></tr>
+                <tr><td><a class="link" asp-controller="Orders" asp-action="Details" asp-route-id="1046">#INV-1046</a></td><td>Sardor Jabborov</td><td class="num">960,000 UZS</td><td><span class="badge warn">Pending</span></td><td class="muted">Today 12:05</td></tr>
+                <tr><td><a class="link" asp-controller="Orders" asp-action="Details" asp-route-id="1045">#INV-1045</a></td><td>Rustam Yo'ldoshev</td><td class="num">4,310,000 UZS</td><td><span class="badge ok">Paid</span></td><td class="muted">Yesterday 18:30</td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>

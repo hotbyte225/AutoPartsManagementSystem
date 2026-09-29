@@ -1,0 +1,76 @@
+@{
+    ViewBag.Title = "Reports";
+}
+<div class="page">
+    <div>
+        <h1>Reports</h1>
+        <div class="muted">Sales, products and stock analytics</div>
+    </div>
+    <form asp-action="Index" method="get" class="d-flex gap-2 flex-wrap align-items-end">
+        <div><label class="form-label" for="from">From</label><input class="form-control" id="from" name="from" type="date" value="2026-09-01"></div>
+        <div><label class="form-label" for="to">To</label><input class="form-control" id="to" name="to" type="date" value="2026-09-30"></div>
+        <button class="btn btn-primary">Generate</button>
+        <a asp-action="Export" class="btn btn-light">⇩ Excel</a>
+    </form>
+</div>
+
+<div data-tabs-scope>
+    <div class="tabs mb-3" data-tabs>
+        <button type="button" class="active" data-tab="sales">Sales</button>
+        <button type="button" data-tab="products">Top products</button>
+        <button type="button" data-tab="stock">Stock by category</button>
+    </div>
+
+    <div data-pane="sales" class="show">
+        <div class="stats three">
+            <div class="stat"><label>Revenue</label><strong>178.4M</strong><span class="up">↑ 18.4% vs August</span></div>
+            <div class="stat"><label>Orders</label><strong>86</strong><span class="up">↑ 5.4% vs August</span></div>
+            <div class="stat"><label>Avg. order value</label><strong>2.07M</strong><span>UZS per order</span></div>
+        </div>
+        <div class="card">
+            <h3>Monthly Revenue</h3>
+            <div class="muted">January — December 2026, million UZS</div>
+            <div class="bars">
+                <div class="bar" style="height:37%" title="Jan: 8.2M"></div><div class="bar" style="height:51%" title="Feb: 11.5M"></div>
+                <div class="bar" style="height:44%" title="Mar: 9.8M"></div><div class="bar" style="height:63%" title="Apr: 14.2M"></div>
+                <div class="bar" style="height:58%" title="May: 13.1M"></div><div class="bar" style="height:75%" title="Jun: 16.8M"></div>
+                <div class="bar" style="height:69%" title="Jul: 15.4M"></div><div class="bar" style="height:84%" title="Aug: 18.9M"></div>
+                <div class="bar" style="height:77%" title="Sep: 17.2M"></div><div class="bar" style="height:90%" title="Oct: 20.1M"></div>
+                <div class="bar" style="height:100%" title="Nov: 22.4M"></div><div class="bar" style="height:88%" title="Dec: 19.6M"></div>
+            </div>
+            <div class="labels"><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span></div>
+        </div>
+    </div>
+
+    <div data-pane="products">
+        <div class="tablebox">
+            <div class="tablehead">Top Selling Products</div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead><tr><th>#</th><th>Product</th><th>Category</th><th class="right">Qty sold</th><th class="right">Revenue (UZS)</th></tr></thead>
+                    <tbody>
+                        <tr><td><span class="avatar sm">1</span></td><td><div class="product"><div class="pic">🔧</div><span>Brake Pad Set</span></div></td><td class="muted">Brake System</td><td class="num right">34</td><td class="num right text-primary">27,200,000</td></tr>
+                        <tr><td><span class="avatar sm">2</span></td><td><div class="product"><div class="pic">🔋</div><span>Car Battery 60Ah</span></div></td><td class="muted">Electrical</td><td class="num right">19</td><td class="num right text-primary">21,850,000</td></tr>
+                        <tr><td><span class="avatar sm">3</span></td><td><div class="product"><div class="pic">🛞</div><span>Front Wheel Hub</span></div></td><td class="muted">Suspension</td><td class="num right">15</td><td class="num right text-primary">9,750,000</td></tr>
+                        <tr><td><span class="avatar sm">4</span></td><td><div class="product"><div class="pic">⚙</div><span>Oil Filter</span></div></td><td class="muted">Filters</td><td class="num right">58</td><td class="num right text-primary">6,960,000</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div data-pane="stock">
+        <div class="card">
+            <h3>Stock by Category</h3>
+            <div class="muted">Units currently in warehouse</div>
+            <div class="hbars">
+                <div><span>Engine</span><em style="width:100%"></em><span>4,820</span></div>
+                <div><span>Suspension</span><em style="width:86%"></em><span>4,140</span></div>
+                <div><span>Tires &amp; Wheels</span><em style="width:73%"></em><span>3,520</span></div>
+                <div><span>Brake System</span><em style="width:66%"></em><span>3,190</span></div>
+                <div><span>Filters</span><em style="width:40%"></em><span>1,930</span></div>
+                <div><span>Electrical</span><em style="width:17%"></em><span>820</span></div>
+            </div>
+        </div>
+    </div>
+</div>

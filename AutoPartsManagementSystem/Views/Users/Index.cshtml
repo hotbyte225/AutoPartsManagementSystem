@@ -1,0 +1,42 @@
+@{
+    ViewBag.Title = "Users";
+}
+<div class="page">
+    <div>
+        <h1>Users</h1>
+        <div class="muted">People who can sign in to the system</div>
+    </div>
+    <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#userModal">+ Add User</button>
+</div>
+
+<div class="tablebox">
+    <div class="table-responsive">
+        <table class="table">
+            <thead><tr><th>User</th><th>Email</th><th>Role</th><th>Status</th><th>Last login</th><th></th></tr></thead>
+            <tbody>
+                <tr><td><div class="product"><span class="avatar sm">ZS</span><span>Zufar Salayev</span></div></td><td class="muted">admin@autoparts.uz</td><td><span class="badge violet">Admin</span></td><td><span class="dot up">Active</span></td><td class="muted">Today 16:50</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button></div></td></tr>
+                <tr><td><div class="product"><span class="avatar sm dark">DM</span><span>Dilshod Mirzayev</span></div></td><td class="muted">manager@autoparts.uz</td><td><span class="badge info">Manager</span></td><td><span class="dot up">Active</span></td><td class="muted">Today 09:12</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="2" method="post" data-confirm="Delete Dilshod Mirzayev?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
+                <tr><td><div class="product"><span class="avatar sm dark">MN</span><span>Madina Nazarova</span></div></td><td class="muted">cashier@autoparts.uz</td><td><span class="badge ok">Cashier</span></td><td><span class="dot up">Active</span></td><td class="muted">Today 08:58</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="3" method="post" data-confirm="Delete Madina Nazarova?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
+                <tr><td><div class="product"><span class="avatar sm dark">JT</span><span>Jasur Toshmatov</span></div></td><td class="muted">jasur@autoparts.uz</td><td><span class="badge ok">Cashier</span></td><td><span class="dot text-secondary">Inactive</span></td><td class="muted">12 Aug 2026</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="4" method="post" data-confirm="Delete Jasur Toshmatov?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="userModal" tabindex="-1" aria-labelledby="userModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form asp-action="Create" method="post" class="modal-content">
+            <div class="modal-header"><h5 class="modal-title" id="userModalLabel">Add User</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div><label class="form-label" for="uName">Full name *</label><input class="form-control" id="uName" name="FullName" required></div>
+                    <div><label class="form-label" for="uMail">Email *</label><input class="form-control" id="uMail" name="Email" type="email" required></div>
+                    <div><label class="form-label" for="uRole">Role</label><select class="form-select" id="uRole" name="Role"><option>Admin</option><option selected>Manager</option><option>Cashier</option></select></div>
+                    <div><label class="form-label" for="uPass">Temporary password *</label><input class="form-control" id="uPass" name="Password" type="password" required></div>
+                    <div class="full form-check form-switch ms-1"><input class="form-check-input" type="checkbox" id="uActive" name="IsActive" value="true" checked><label class="form-check-label" for="uActive">Account is active</label></div>
+                </div>
+            </div>
+            <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary">Save User</button></div>
+        </form>
+    </div>
+</div>

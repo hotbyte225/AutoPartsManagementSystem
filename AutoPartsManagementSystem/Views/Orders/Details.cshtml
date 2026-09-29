@@ -1,0 +1,43 @@
+@{
+    ViewBag.Title = "Order #INV-1048";
+}
+<div class="page">
+    <div>
+        <h1>Order #INV-1048</h1>
+        <div class="muted">Created by Cashier · Today 16:42</div>
+    </div>
+    <div class="btns">
+        <button class="btn btn-light btn-sm" onclick="window.print()">⎙ Print invoice</button>
+        <a asp-action="Index" class="btn btn-light btn-sm">← Back to Orders</a>
+    </div>
+</div>
+
+<div class="card mb-3">
+    <h3>Summary</h3>
+    <div class="info">
+        <div><small>Customer</small><b>Azizbek Karimov</b></div>
+        <div><small>Phone</small><b>+998 90 123 45 67</b></div>
+        <div><small>Status</small><b><span class="badge ok">Paid</span></b></div>
+        <div><small>Payment</small><b>Cash</b></div>
+    </div>
+</div>
+
+<div class="tablebox">
+    <div class="tablehead">Items</div>
+    <div class="table-responsive">
+        <table class="table">
+            <thead><tr><th>#</th><th>Product</th><th>Part No.</th><th class="right">Price</th><th class="right">Qty</th><th class="right">Total</th></tr></thead>
+            <tbody>
+                <tr><td class="mono">1</td><td><div class="product"><div class="pic">⚙</div><span>Oil Filter</span></div></td><td class="mono">OF-12345</td><td class="right">120,000</td><td class="right">2</td><td class="num right">240,000</td></tr>
+                <tr><td class="mono">2</td><td><div class="product"><div class="pic">⚡</div><span>Spark Plug</span></div></td><td class="mono">SP-54321</td><td class="right">75,000</td><td class="right">4</td><td class="num right">300,000</td></tr>
+                <tr><td class="mono">3</td><td><div class="product"><div class="pic">🛞</div><span>Front Wheel Hub</span></div></td><td class="mono">WH-20931</td><td class="right">650,000</td><td class="right">1</td><td class="num right">650,000</td></tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="totals">
+        <div><span>Subtotal</span><span>1,190,000</span></div>
+        <div><span>Discount</span><span class="down">−0</span></div>
+        <div><span>Service</span><span>60,000</span></div>
+        <div><span>Total</span><span>1,250,000 UZS</span></div>
+    </div>
+</div>

@@ -1,0 +1,56 @@
+@{
+    ViewBag.Title = "Warehouse";
+}
+<div class="page">
+    <div>
+        <h1>Warehouse</h1>
+        <div class="muted">Stock levels across the store</div>
+    </div>
+    <div class="btns">
+        <button class="btn btn-light btn-sm" data-toast="Export started">⇩ Export</button>
+        <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#stockModal">+ Stock In</button>
+    </div>
+</div>
+
+<div class="stats three">
+    <div class="stat"><label>Total Units</label><strong>18,420</strong><span>in 1,248 products</span></div>
+    <div class="stat"><label>Low Stock</label><strong>17</strong><span class="down">Below minimum level</span></div>
+    <div class="stat"><label>Out of Stock</label><strong>4</strong><span class="down">Reorder now</span></div>
+</div>
+
+<div class="tablebox">
+    <div class="toolbar">
+        <input class="form-control" data-filter="#whTable" placeholder="Search product..." aria-label="Search product">
+        <select class="form-select" aria-label="Status"><option>All statuses</option><option>In stock</option><option>Low stock</option><option>Out of stock</option></select>
+    </div>
+    <div class="table-responsive">
+        <table class="table" id="whTable">
+            <thead><tr><th>Product</th><th>Category</th><th>Stock level</th><th>Min.</th><th>Status</th><th></th></tr></thead>
+            <tbody>
+                <tr><td><div class="product"><div class="pic">⚡</div><span>Spark Plug</span></div></td><td class="muted">Ignition</td><td><span class="level"><i style="width:84%"></i></span><span class="num">42</span></td><td class="mono">10</td><td><span class="badge ok">In stock</span></td><td><button class="icon-btn edit" title="Adjust" data-bs-toggle="modal" data-bs-target="#stockModal">✎</button></td></tr>
+                <tr><td><div class="product"><div class="pic">💡</div><span>Headlight Bulb H7</span></div></td><td class="muted">Electrical</td><td><span class="level"><i style="width:60%"></i></span><span class="num">24</span></td><td class="mono">10</td><td><span class="badge ok">In stock</span></td><td><button class="icon-btn edit" title="Adjust" data-bs-toggle="modal" data-bs-target="#stockModal">✎</button></td></tr>
+                <tr><td><div class="product"><div class="pic">⚙</div><span>Oil Filter</span></div></td><td class="muted">Filters</td><td><span class="level warn"><i style="width:30%"></i></span><span class="num">6</span></td><td class="mono">10</td><td><span class="badge warn">Low stock</span></td><td><button class="icon-btn edit" title="Adjust" data-bs-toggle="modal" data-bs-target="#stockModal">✎</button></td></tr>
+                <tr><td><div class="product"><div class="pic">🔋</div><span>Car Battery 60Ah</span></div></td><td class="muted">Electrical</td><td><span class="level warn"><i style="width:25%"></i></span><span class="num">5</span></td><td class="mono">8</td><td><span class="badge warn">Low stock</span></td><td><button class="icon-btn edit" title="Adjust" data-bs-toggle="modal" data-bs-target="#stockModal">✎</button></td></tr>
+                <tr><td><div class="product"><div class="pic">🔧</div><span>Brake Pad Set</span></div></td><td class="muted">Brake System</td><td><span class="level bad"><i style="width:15%"></i></span><span class="num">3</span></td><td class="mono">10</td><td><span class="badge bad">Critical</span></td><td><button class="icon-btn edit" title="Adjust" data-bs-toggle="modal" data-bs-target="#stockModal">✎</button></td></tr>
+                <tr><td><div class="product"><div class="pic">💨</div><span>Air Filter</span></div></td><td class="muted">Filters</td><td><span class="level bad"><i style="width:0"></i></span><span class="num">0</span></td><td class="mono">10</td><td><span class="badge bad">Out of stock</span></td><td><button class="icon-btn edit" title="Adjust" data-bs-toggle="modal" data-bs-target="#stockModal">✎</button></td></tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="stockModal" tabindex="-1" aria-labelledby="stockModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <form asp-action="Adjust" method="post" class="modal-content">
+            <div class="modal-header"><h5 class="modal-title" id="stockModalLabel">Stock Movement</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
+            <div class="modal-body">
+                <div class="form-grid">
+                    <div class="full"><label class="form-label" for="smProduct">Product</label><select class="form-select" id="smProduct" name="ProductId"><option value="1">Brake Pad Set</option><option value="2">Oil Filter</option><option value="3">Air Filter</option></select></div>
+                    <div><label class="form-label" for="smType">Type</label><select class="form-select" id="smType" name="Type"><option>Stock in</option><option>Stock out</option><option>Correction</option></select></div>
+                    <div><label class="form-label" for="smQty">Quantity</label><input class="form-control" id="smQty" name="Quantity" type="number" min="1" value="1"></div>
+                    <div class="full"><label class="form-label" for="smNote">Note</label><input class="form-control" id="smNote" name="Note" placeholder="Supplier invoice no., reason..."></div>
+                </div>
+            </div>
+            <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary">Save Movement</button></div>
+        </form>
+    </div>
+</div>
