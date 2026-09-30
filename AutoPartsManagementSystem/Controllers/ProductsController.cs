@@ -41,7 +41,35 @@ namespace AutoPartsManagementSystem.Controllers
             return RedirectToAction("Index");
         }
 
-        
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var product = _db.Products.Find(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return View(product);
+        }
+        [HttpPost,ValidateAntiForgeryToken]
+        public IActionResult Edit(int id,Product product)
+        {
+            if (id != product.Id)
+            {
+                return NotFound();
+            } 
+            
+            if (!ModelState.IsValid)
+            {
+                return View(product);
+            }
+            _db.Products.Update(product);
+            _db.SaveChanges();
+            TempData["Toast"] = "Product updated.";
+            return RedirectToAction("Index");
+
+
+        }
 
 
     }
