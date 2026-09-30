@@ -1,3 +1,5 @@
+@model List<Category>
+
 @{
     ViewBag.Title = "Categories";
 }
@@ -15,14 +17,15 @@
     </div>
     <div class="table-responsive">
         <table class="table" id="catTable">
-            <thead><tr><th>#</th><th>Name</th><th>Description</th><th>Products</th><th></th></tr></thead>
+            <thead><tr><th>Name</th><th>Description</th><th>Products</th><th></th></tr></thead>
             <tbody>
-                <tr><td class="mono">1</td><td class="fw-semibold">Engine</td><td class="muted">Engine parts and components</td><td class="num text-primary">248</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="1" method="post" data-confirm="Delete Engine?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
-                <tr><td class="mono">2</td><td class="fw-semibold">Brake System</td><td class="muted">Brake pads, discs, calipers</td><td class="num text-primary">132</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="2" method="post" data-confirm="Delete Brake System?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
-                <tr><td class="mono">3</td><td class="fw-semibold">Filters</td><td class="muted">Oil, air, fuel and cabin filters</td><td class="num text-primary">127</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="3" method="post" data-confirm="Delete Filters?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
-                <tr><td class="mono">4</td><td class="fw-semibold">Suspension</td><td class="muted">Shock absorbers, springs, hubs</td><td class="num text-primary">141</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="4" method="post" data-confirm="Delete Suspension?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
-                <tr><td class="mono">5</td><td class="fw-semibold">Electrical</td><td class="muted">Batteries, bulbs, wiring</td><td class="num text-primary">96</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="5" method="post" data-confirm="Delete Electrical?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
-                <tr><td class="mono">6</td><td class="fw-semibold">Tires &amp; Wheels</td><td class="muted">Tires, rims, wheel accessories</td><td class="num text-primary">85</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="6" method="post" data-confirm="Delete Tires & Wheels?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
+                @foreach (var c in Model){
+                <tr>
+                    <td class="fw-semibold">@c.Name</td>
+                    <td class="muted">@c.Description</td>
+                    <td class="num text-primary">@c.Products.Count()</td>
+                    <td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="1" method="post" data-confirm="Delete Engine?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
+                }
             </tbody>
         </table>
     </div>
