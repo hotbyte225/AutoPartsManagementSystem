@@ -14,13 +14,35 @@ namespace AutoPartsManagementSystem.Controllers
         }
 
 
+        
+
         public IActionResult Index()
         {
             return View(_db.Products.ToList());
         }
+
+        [HttpGet]
         public IActionResult Create()
         {
             return View();
         }
+
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Create(Product product)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(product);
+            }
+            _db.Products.Add(product);
+            _db.SaveChanges();
+            TempData["Toast"] = "Mahsulot qo'shildi.";
+            return RedirectToAction("Index");
+        }
+
+        
+
+
     }
 }

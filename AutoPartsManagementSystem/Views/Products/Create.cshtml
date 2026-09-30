@@ -1,3 +1,5 @@
+@model Product
+
 @{
     ViewBag.Title = "Add Product";
 }
@@ -12,32 +14,41 @@
 <form asp-action="Create" method="post" enctype="multipart/form-data" class="card" style="max-width:860px">
     <div class="form-grid">
         <div>
-            <label class="form-label" for="Name">Product name *</label>
-            <input class="form-control" id="Name" name="Name" placeholder="e.g. Brake Pad Set" required>
+            <label class="form-label">Product name *</label>
+            <span asp-validation-for="Name" class="text-danger small"></span>
+            <input asp-for="Name" class="form-control" placeholder="e.g. Brake Pad Set" >
         </div>
         <div>
-            <label class="form-label" for="PartNumber">Part number *</label>
-            <input class="form-control mono" id="PartNumber" name="PartNumber" placeholder="BP-53482" required>
+            <label class="form-label">Part number *</label>
+            <span asp-validation-for="PartNumber" class="text-danger small"></span>
+            <input asp-for="PartNumber" class="form-control mono" placeholder="BP-53482" >
         </div>
         <div>
-            <label class="form-label" for="BrandId">Brand</label>
-            <select class="form-select" id="BrandId" name="BrandId"><option value="">Select brand</option><option value="1">Bosch</option><option value="2">Brembo</option><option value="3">Mann</option><option value="4">NGK</option></select>
+            <label class="form-label">Brand</label>
+            <select asp-for="Brand" class="form-select" >
+                <option value="">Select brand</option>
+                <option>Bosch</option>
+                <option>Brembo</option>
+                <option>Mann</option>
+                <option>NGK</option>
+            </select>
         </div>
         <div>
-            <label class="form-label" for="CategoryId">Category</label>
-            <select class="form-select" id="CategoryId" name="CategoryId"><option value="">Select category</option><option value="1">Engine</option><option value="2">Brake System</option><option value="3">Filters</option><option value="4">Suspension</option><option value="5">Electrical</option></select>
+            <label class="form-label">Category</label>
+            <select asp-for="Category" class="form-select"  ><option value="">Select category</option><option value="1">Engine</option><option value="2">Brake System</option><option value="3">Filters</option><option value="4">Suspension</option><option value="5">Electrical</option></select>
         </div>
         <div>
-            <label class="form-label" for="Price">Price (UZS) *</label>
-            <input class="form-control" id="Price" name="Price" type="number" min="0" placeholder="0" required>
+            <label class="form-label">Price (UZS) *</label>
+            <span asp-validation-for="Price" class="text-danger small"></span>
+            <input asp-for="Price" class="form-control" type="number" min="0" placeholder="0" >
         </div>
         <div>
-            <label class="form-label" for="Quantity">Quantity</label>
-            <input class="form-control" id="Quantity" name="Quantity" type="number" min="0" placeholder="0">
+            <label class="form-label">Quantity</label>
+            <input asp-for="Quantity" class="form-control" type="number" min="0" placeholder="0">
         </div>
         <div class="full">
-            <label class="form-label" for="Description">Description</label>
-            <textarea class="form-control" id="Description" name="Description" rows="3" placeholder="Compatible models, size, notes..."></textarea>
+            <label class="form-label">Description</label>
+            <textarea asp-for="Description" class="form-control" rows="3" placeholder="Compatible models, size, notes..."></textarea>
         </div>
         <div class="full">
             <label class="form-label">Image</label>
