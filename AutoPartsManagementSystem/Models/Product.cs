@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AutoPartsManagementSystem.Models
 {
+    [Index(nameof(PartNumber), IsUnique = true)]
     public class Product
     {
         public int Id { get; set; }
@@ -15,8 +16,9 @@ namespace AutoPartsManagementSystem.Models
         [StringLength(100)]
         public string? Brand { get; set; }
 
-        [StringLength(100)]
-        public string? Category { get; set; }
+        public int? CategoryId { get; set; }
+
+        public Category? Category { get; set; }
 
         [Precision(18, 2), Range(0, 100000000)]
         public decimal Price { get; set; }
