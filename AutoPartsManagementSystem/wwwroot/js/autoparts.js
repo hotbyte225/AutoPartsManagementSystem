@@ -6,18 +6,19 @@
   const fmt = n => new Intl.NumberFormat('en-US').format(Math.round(n));
 
   /* ---------- Toast:  toast('Saved')  yoki  data-toast="Saved" ---------- */
-  window.toast = function (msg) {
+window.toast = function (msg, type) {
     const el = $('#toast');
     if (!el || !window.bootstrap) return;
     $('.toast-body', el).textContent = msg;
+    el.classList.toggle('error', type === 'error');
     bootstrap.Toast.getOrCreateInstance(el, { delay: 2500 }).show();
-  };
+};
   document.addEventListener('click', e => {
     const t = e.target.closest('[data-toast]');
     if (t) { e.preventDefault(); toast(t.dataset.toast); }
   });
   // Controller'dan: TempData["Toast"] = "Product saved";  -> <body data-flash="...">
-  if (document.body.dataset.flash) toast(document.body.dataset.flash);
+    if (document.body.dataset.flash) toast(document.body.dataset.flash, document.body.dataset.flashType);
 
   /* ---------- Sidebar (mobil) ---------- */
   const menu = $('#menu');

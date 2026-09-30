@@ -24,7 +24,7 @@
                     <td class="fw-semibold">@c.Name</td>
                     <td class="muted">@c.Description</td>
                     <td class="num text-primary">@c.Products.Count()</td>
-                    <td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="1" method="post" data-confirm="Delete Engine?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
+                    <td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="@c.Id" method="post" data-confirm="Delete Engine?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
                 }
             </tbody>
         </table>

@@ -373,3 +373,7 @@ a { text-decoration: none; }
 .validation-summary-valid { display: none; }
 .tablehead a, .card-head a, .table a.link { color: var(--blue); }
 .content .table td.muted, .content .table td.mono { color: var(--muted); }
+#toast.error .toast-body::before {
+    content: "✕";
+    background: #f43f5e;
+}
