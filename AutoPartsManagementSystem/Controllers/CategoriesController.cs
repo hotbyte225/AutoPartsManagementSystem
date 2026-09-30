@@ -41,6 +41,41 @@ namespace AutoPartsManagementSystem.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var category = _db.Categories.Find(id);
+            if (category == null)
+            {
+                return NotFound();
+            }
+            return View(category);
+
+        }
+
+        [HttpPost,ValidateAntiForgeryToken]
+        public IActionResult Edit(int id, Category category)
+        {
+            category.Name = category.Name?.Trim() ?? "";
+            if (id != category.Id)
+            {
+                return NotFound();
+            }
+            if ((_db.Categories.Any(c => c.Name == category.Name && c.Id != category.Id)))
+            {
+                
+                ModelState.AddModelError(nameof(Category.Name), "This category name already exists!");
+            }
+            if (!ModelState.IsValid)
+            {
+           
+                return View(category);
+            }
+            _db.Categories.Update(category);
+            _db.SaveChanges();
+            TempData["Toast"] = "Category updated.";
+            return RedirectToAction("Index");
+        }
 
 
         [HttpPost, ValidateAntiForgeryToken]
