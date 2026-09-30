@@ -10,7 +10,7 @@
     </div>
     <a asp-action="Index" class="btn btn-light btn-sm">← Back to Products</a>
 </div>
-
+<div asp-validation-summary="ModelOnly" class="alert alert-danger small"></div>
 <form asp-action="Create" method="post" enctype="multipart/form-data" class="card" style="max-width:860px">
     <div class="form-grid">
         <div>
@@ -35,23 +35,19 @@
         </div>
         <div>
             <label class="form-label">Category</label>
-            <select asp-for="Category" class="form-select"  >
+            <select asp-for="CategoryId" asp-items="ViewBag.Categories" class="form-select"  >
                 <option value="">Select category</option>
-                <option>Engine</option>
-                <option>Brake System</option>
-                <option>Filters</option>
-                <option>Suspension</option>
-                <option>Electrical</option>
             </select>
         </div>
         <div>
             <label class="form-label">Price (UZS) *</label>
             <span asp-validation-for="Price" class="text-danger small"></span>
-            <input asp-for="Price" class="form-control" type="number" min="0" placeholder="0" >
+            <input asp-for="Price" class="form-control" type="number" min="0">
         </div>
         <div>
             <label class="form-label">Quantity</label>
-            <input asp-for="Quantity" class="form-control" type="number" min="0" placeholder="0">
+            <span asp-validation-for="Quantity" class="text-danger small"></span>
+            <input asp-for="Quantity" class="form-control" type="number" min="0">
         </div>
         <div class="full">
             <label class="form-label">Description</label>

@@ -1,10 +1,11 @@
 ﻿using AutoPartsManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartsManagementSystem.Controllers
 {
-    [Index(nameof(Product.PartNumber), IsUnique = true)]
+  
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -14,16 +15,18 @@ namespace AutoPartsManagementSystem.Controllers
             _db = db;
         }
 
-
+        
         public IActionResult Index()
         {
-            return View(_db.Products.ToList());
+            
+            return View(_db.Products.Include(p => p.Category).ToList());
         }
 
         [HttpGet]
         public IActionResult Create()
         {
-            return View();
+            LoadCategories();
+            return View(new Product());
         }
 
 
@@ -38,6 +41,7 @@ namespace AutoPartsManagementSystem.Controllers
             }
             if (!ModelState.IsValid)
             {
+                LoadCategories();
                 return View(product);
             }
 
@@ -57,6 +61,7 @@ namespace AutoPartsManagementSystem.Controllers
             {
                 return NotFound();
             }
+            LoadCategories();
             return View(product);
         }
         [HttpPost,ValidateAntiForgeryToken]
@@ -74,7 +79,7 @@ namespace AutoPartsManagementSystem.Controllers
 
             if (!ModelState.IsValid)
             {
-                
+                LoadCategories();
                 return View(product);
             }
             _db.Products.Update(product);
@@ -84,11 +89,11 @@ namespace AutoPartsManagementSystem.Controllers
 
 
         }
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {
             var product = _db.Products.Find(id);
-            if (id != product.Id)
+            if (product == null)
             {
                 return NotFound();
             }
@@ -98,6 +103,10 @@ namespace AutoPartsManagementSystem.Controllers
             return RedirectToAction("Index");
         }
 
+        private void LoadCategories()
+        {
 
+            ViewBag.Categories = new SelectList(_db.Categories.ToList(), "Id", "Name");
+        }
     }
 }

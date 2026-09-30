@@ -20,7 +20,7 @@ namespace AutoPartsManagementSystem.Models
 
         public Category? Category { get; set; }
 
-        [Precision(18, 2), Range(0, 100000000)]
+        [Precision(18, 2), Range(200000, 100000000, ErrorMessage = "Price must be greater than 20000")]
         public decimal Price { get; set; }
 
         [Range(0, 10000)]

@@ -39,7 +39,11 @@
                         <td><div class="product"><span>@p.Name</span></div></td>
                         <td class="mono">@p.PartNumber</td>
                         <td>@p.Brand</td>
-                        <td><span class="badge off">@p.Category</span></td>
+                        <td>@if (!string.IsNullOrEmpty(p.Category?.Name))
+                                {
+                                    <span class="badge off">@p.Category?.Name</span>
+                                }
+                            </td>
                         <td class="num right">@p.Price.ToString("N0")</td>
                         <td><span class="badge @stockCss">@(p.Quantity == 0 ? "Out" : p.Quantity + " pcs")</span></td>
                         <td>
