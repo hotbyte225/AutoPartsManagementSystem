@@ -18,7 +18,31 @@ namespace AutoPartsManagementSystem.Controllers
         {
             return View(_db.Categories.Include(c => c.Products).ToList());
         }
-        
+
+        [HttpPost,ValidateAntiForgeryToken]
+        public IActionResult Create(Category category)
+        {
+            category.Name = category.Name?.Trim() ?? "";
+            if (_db.Categories.Any(c => c.Name == category.Name))
+            {
+                TempData["ToastType"] = "error";
+                TempData["Toast"] = "This category name already exists!";
+                return RedirectToAction("Index");
+            }
+            if (!ModelState.IsValid)
+            {
+                TempData["ToastType"] = "error";
+                TempData["Toast"] = "Category not added";
+                return RedirectToAction("Index");
+            }
+            _db.Categories.Add(category);
+            _db.SaveChanges();
+            TempData["Toast"] = "Category added";
+            return RedirectToAction("Index");
+        }
+
+
+
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {

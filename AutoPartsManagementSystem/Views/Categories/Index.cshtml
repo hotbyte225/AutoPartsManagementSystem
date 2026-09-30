@@ -36,7 +36,10 @@
         <form asp-action="Create" method="post" class="modal-content">
             <div class="modal-header"><h5 class="modal-title" id="categoryModalLabel">Add Category</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
             <div class="modal-body">
-                <div class="mb-3"><label class="form-label" for="cName">Name *</label><input class="form-control" id="cName" name="Name" placeholder="e.g. Transmission" required></div>
+                <div class="mb-3">               
+                    <label class="form-label" for="cName">Name *</label>
+                    <input class="form-control" id="cName" name="Name" placeholder="e.g. Transmission" required>
+                </div>
                 <div><label class="form-label" for="cDesc">Description</label><textarea class="form-control" id="cDesc" name="Description" rows="3"></textarea></div>
             </div>
             <div class="modal-footer"><button type="button" class="btn btn-light" data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary">Save Category</button></div>
