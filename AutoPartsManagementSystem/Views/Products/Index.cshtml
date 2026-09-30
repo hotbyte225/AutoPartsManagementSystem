@@ -1,20 +1,19 @@
+@using AutoPartsManagementSystem.Models
+
+@model List<Product>
+
+
 @{
+    
     ViewBag.Title = "Products";
-    // TODO: bu ro'yxatni keyin @model IEnumerable<Product> bilan almashtirasiz
-    var products = new[] {
-        new { Id = 1, Pic = "🔧", Name = "Brake Pad Set",    No = "BP-53482", Brand = "Brembo",  Cat = "Brake System", Price = 800000, Stock = 3 },
-        new { Id = 2, Pic = "⚙",  Name = "Oil Filter",       No = "OF-12345", Brand = "Mann",    Cat = "Filters",      Price = 120000, Stock = 6 },
-        new { Id = 3, Pic = "💨", Name = "Air Filter",       No = "AF-47890", Brand = "Bosch",   Cat = "Filters",      Price = 180000, Stock = 0 },
-        new { Id = 4, Pic = "⚡", Name = "Spark Plug",       No = "SP-54321", Brand = "NGK",     Cat = "Ignition",     Price = 75000,  Stock = 42 },
-        new { Id = 5, Pic = "🛞", Name = "Front Wheel Hub",  No = "WH-20931", Brand = "SKF",     Cat = "Suspension",   Price = 650000, Stock = 2 },
-        new { Id = 6, Pic = "🔋", Name = "Car Battery 60Ah", No = "CB-60012", Brand = "Varta",   Cat = "Electrical",   Price = 1150000, Stock = 5 },
-        new { Id = 7, Pic = "💡", Name = "Headlight Bulb H7", No = "HB-33211", Brand = "Philips", Cat = "Electrical",  Price = 95000,  Stock = 24 },
-    };
+    
+    
+    
 }
 <div class="page">
     <div>
         <h1>Products</h1>
-        <div class="muted">1,248 parts in catalog</div>
+        <div class="muted">@Model.Count() parts in catalog</div>
     </div>
     <a asp-controller="Products" asp-action="Create" class="btn btn-primary btn-sm">+ Add Product</a>
 </div>
@@ -33,16 +32,16 @@
         <table class="table" id="productTable">
             <thead><tr><th>Product</th><th>Part No.</th><th>Brand</th><th>Category</th><th class="right">Price (UZS)</th><th>Stock</th><th></th></tr></thead>
             <tbody>
-                @foreach (var p in products)
+                @foreach (var p in Model)
                 {
-                    var stockCss = p.Stock == 0 ? "bad" : p.Stock <= 6 ? "warn" : "ok";
+                    var stockCss = p.Quantity == 0 ? "bad" : p.Quantity <= 6 ? "warn" : "ok";
                     <tr>
-                        <td><div class="product"><div class="pic">@p.Pic</div><span>@p.Name</span></div></td>
-                        <td class="mono">@p.No</td>
+                        <td><div class="product"><span>@p.Name</span></div></td>
+                        <td class="mono">@p.PartNumber</td>
                         <td>@p.Brand</td>
-                        <td><span class="badge off">@p.Cat</span></td>
+                        <td><span class="badge off">@p.Category</span></td>
                         <td class="num right">@p.Price.ToString("N0")</td>
-                        <td><span class="badge @stockCss">@(p.Stock == 0 ? "Out" : p.Stock + " pcs")</span></td>
+                        <td><span class="badge @stockCss">@(p.Quantity == 0 ? "Out" : p.Quantity + " pcs")</span></td>
                         <td>
                             <div class="actions">
                                 <a asp-action="Edit" asp-route-id="@p.Id" class="icon-btn edit" title="Edit">✎</a>
