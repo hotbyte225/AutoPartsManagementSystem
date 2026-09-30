@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartsManagementSystem.Controllers
 {
+    [Index(nameof(Product.PartNumber), IsUnique = true)]
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -13,8 +14,6 @@ namespace AutoPartsManagementSystem.Controllers
             _db = db;
         }
 
-
-        
 
         public IActionResult Index()
         {
@@ -31,10 +30,19 @@ namespace AutoPartsManagementSystem.Controllers
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Create(Product product)
         {
+
+            if (_db.Products.Any(p => p.PartNumber == product.PartNumber))
+            {
+                ModelState.AddModelError(nameof(Product.PartNumber), "This part number already exists!");
+
+            }
             if (!ModelState.IsValid)
             {
                 return View(product);
             }
+
+
+
             _db.Products.Add(product);
             _db.SaveChanges();
             TempData["Toast"] = "Mahsulot qo'shildi.";
@@ -59,8 +67,14 @@ namespace AutoPartsManagementSystem.Controllers
                 return NotFound();
             } 
             
+            if (_db.Products.Any(p => p.PartNumber == product.PartNumber &&  p.Id != product.Id))
+            {
+                ModelState.AddModelError(nameof(Product.PartNumber), "This part number already exists!");
+            }
+
             if (!ModelState.IsValid)
             {
+                
                 return View(product);
             }
             _db.Products.Update(product);
@@ -69,6 +83,19 @@ namespace AutoPartsManagementSystem.Controllers
             return RedirectToAction("Index");
 
 
+        }
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+            var product = _db.Products.Find(id);
+            if (id != product.Id)
+            {
+                return NotFound();
+            }
+            _db.Products.Remove(product);
+            _db.SaveChanges();
+            TempData["Toast"] = "Product removed.";
+            return RedirectToAction("Index");
         }
 
 
