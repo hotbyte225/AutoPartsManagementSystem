@@ -97,6 +97,12 @@ namespace AutoPartsManagementSystem.Controllers
             {
                 return NotFound();
             }
+            if (_db.OrderItems.Any(p => p.ProductId == id))
+            {
+                TempData["ToastType"] = "error";
+                TempData["Toast"] = "Cannot delete: this product has been sold.";
+                return RedirectToAction("Index");
+            }
             _db.Products.Remove(product);
             _db.SaveChanges();
             TempData["Toast"] = "Product removed.";

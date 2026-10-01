@@ -93,7 +93,12 @@ namespace AutoPartsManagementSystem.Controllers
             {
                 return NotFound();
             }
-
+            if (_db.Orders.Any(p => p.CustomerId == id))
+            {
+                TempData["ToastType"] = "error";
+                TempData["Toast"] = "Cannot delete: this customer has orders.";
+                return RedirectToAction("Index");
+            }
             _db.Customers.Remove(customer);
             _db.SaveChanges();
             TempData["Toast"] = "Customer removed!";
