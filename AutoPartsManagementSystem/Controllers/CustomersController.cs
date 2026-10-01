@@ -39,5 +39,40 @@ namespace AutoPartsManagementSystem.Controllers
             TempData["Toast"] = "Customer added!";
             return RedirectToAction("Index");
         }
+
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var customer = _db.Customers.Find(id);
+            if (customer == null)
+            {
+                return NotFound();
+            }
+            return View(customer);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Edit(int id,Customer customer)
+        {
+            customer.FullName = customer.FullName?.Trim() ?? "";
+            if (customer.Id != id)
+            {
+                return NotFound();
+            }
+            if ((_db.Customers.Any(c => c.Phone == customer.Phone && c.Id != customer.Id)))
+            {
+
+                ModelState.AddModelError(nameof(Customer.Phone), "This phone number already exists!");
+            }
+            if (!ModelState.IsValid)
+            {
+
+                return View(customer);
+            }
+            _db.Customers.Update(customer);
+            _db.SaveChanges();
+            TempData["Toast"] = "Customer updated!";
+            return RedirectToAction("Index");
+        }
     }
 }
