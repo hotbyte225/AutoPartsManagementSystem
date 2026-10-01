@@ -30,7 +30,7 @@
                         
                             <button class="icon-btn edit" title="Edit">✎</button>
                                 </a>
-                        <form asp-action="Delete" asp-route-id="@c.Id" method="post" data-confirm="Delete Engine?">
+                        <form asp-action="Delete" asp-route-id="@c.Id" method="post" data-confirm="Delete @c.Name?">
                             <button class="icon-btn del" title="Delete">✕</button>
                             </form></div></td></tr>
                 }
