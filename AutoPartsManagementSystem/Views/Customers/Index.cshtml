@@ -6,7 +6,7 @@
 <div class="page">
     <div>
         <h1>Customers</h1>
-        <div class="muted">412 registered customers</div>
+        <div class="muted">@Model.Count registered customers</div>
     </div>
     <button class="btn btn-primary btn-sm" data-bs-toggle="modal" data-bs-target="#customerModal">+ Add Customer</button>
 </div>
@@ -22,7 +22,17 @@
             <tbody>
                 @foreach (var c in Model)
                 {
-                <tr><td><div class="product"><span class="avatar sm soft">@c.Initials</span><span>@c.FullName</span></div></td><td><span class="badge off">@c.Type</span></td><td class="mono">@c.Phone</td><td class="muted">@c.Email</td><td class="num text-primary">12</td><td class="num right">14,820,000</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="1" method="post" data-confirm="Delete Azizbek Karimov?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
+                    <tr><td><div class="product"><span class="avatar sm soft">@c.Initials</span><span>@c.FullName</span></div></td><td>
+                            @if (c.Type == "Company")
+                            {
+                                <span class="badge violet">@c.Type</span>
+                            }
+                            else if (c.Type == "Individual")
+                            {
+                                <span class="badge off">@c.Type</span>
+                            }
+                            
+                        </td><td class="mono">@c.Phone</td><td class="muted">@c.Email</td><td class="num text-primary">---</td><td class="num right">---</td><td><div class="actions"><a asp-action="Edit" asp-route-id="@c.Id"><button class="icon-btn edit" title="Edit">✎</button></a><form asp-action="Delete" asp-route-id="@c.Id" method="post" data-confirm="Delete @c.FullName?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
                 }
             </tbody>
         </table>
@@ -35,7 +45,7 @@
             <div class="modal-header"><h5 class="modal-title" id="customerModalLabel">Add Customer</h5><button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button></div>
             <div class="modal-body">
                 <div class="form-grid">
-                    <div class="full"><label class="form-label" for="cuName">Full name / company *</label><input class="form-control" id="cuName" name="Name" required></div>
+                    <div class="full"><label class="form-label" for="cuName">Full name / company *</label><input class="form-control" id="cuName" placeholder="Full Name" name="FullName" required></div>
                     <div><label class="form-label" for="cuPhone">Phone *</label><input class="form-control" id="cuPhone" name="Phone" type="tel" placeholder="+998 __ ___ __ __" required></div>
                     <div><label class="form-label" for="cuType">Type</label><select class="form-select" id="cuType" name="Type"><option>Individual</option><option>Company</option></select></div>
                     <div class="full"><label class="form-label" for="cuMail">Email</label><input class="form-control" id="cuMail" name="Email" type="email"></div>
