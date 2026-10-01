@@ -7,9 +7,11 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace AutoPartsManagementSystem.Models
 {
     [Index(nameof(Phone), IsUnique = true)]
-    public class Customer
+    public class Customer 
     {
         public int Id { get; set; }
+        public ICollection<Order> Orders { get; set; } = new List<Order>();
+
         
         [Required, StringLength(100)]
         public string FullName { get; set; } = "";
