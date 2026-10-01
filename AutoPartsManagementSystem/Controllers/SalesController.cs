@@ -21,5 +21,27 @@ namespace AutoPartsManagementSystem.Controllers
             vm.Customers = _db.Customers.OrderBy(c => c.FullName).ToList();
             return View(vm);
         }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public IActionResult Checkout(CheckoutInput input)
+        {
+            if (!input.Items.Any())
+            {
+                TempData["ToastType"] = "error";
+                TempData["Toast"] = "Cart is empty.";
+                return RedirectToAction("Index");
+            }
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                    .SelectMany(v => v.Errors)
+                    .Select(e => e.ErrorMessage);
+                TempData["ToastType"] = "error";
+                TempData["Toast"] = string.Join(" ", errors);
+                return RedirectToAction("Index");
+            }
+            TempData["Toast"] = $"Received {input.Items.Count} items";
+            return RedirectToAction("Index");
+        }
     }
 }
