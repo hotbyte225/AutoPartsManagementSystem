@@ -1,3 +1,5 @@
+@model SaleViewModel
+@using System.Globalization
 @{
     ViewBag.Title = "New Sale";
 }
@@ -13,16 +15,25 @@
         <div class="d-flex gap-2 flex-wrap">
             <input class="form-control flex-grow-1" style="max-width:none;width:auto" placeholder="Search product or scan barcode..." aria-label="Search product" oninput="document.querySelectorAll('.tile').forEach(t=>t.parentElement.style.display=t.textContent.toLowerCase().includes(this.value.toLowerCase())?'':'none')">
             <select class="form-select" style="width:auto" name="CustomerId" aria-label="Customer">
-                <option value="">Walk-in customer</option><option value="1">Azizbek Karimov</option><option value="2">Auto Service Pro</option><option value="3">Sardor Jabborov</option>
+                <option value="">Walk-in customer</option>
+                @{foreach (var c in Model.Customers){
+                    <option value="@c.Id">@c.FullName</option>
+                }}
             </select>
         </div>
         <div class="tiles">
-            <div><button type="button" class="tile" data-id="1" data-name="Brake Pad Set" data-price="800000"><div class="pic">🔧</div><b>Brake Pad Set</b><span class="mono">BP-53482</span><strong>800,000</strong><small class="down">3 left</small></button></div>
-            <div><button type="button" class="tile" data-id="2" data-name="Oil Filter" data-price="120000"><div class="pic">⚙</div><b>Oil Filter</b><span class="mono">OF-12345</span><strong>120,000</strong><small class="up">6 in stock</small></button></div>
-            <div><button type="button" class="tile" data-id="3" data-name="Air Filter" data-price="180000" disabled><div class="pic">💨</div><b>Air Filter</b><span class="mono">AF-47890</span><strong>180,000</strong><small class="down">Out of stock</small></button></div>
-            <div><button type="button" class="tile" data-id="4" data-name="Spark Plug" data-price="75000"><div class="pic">⚡</div><b>Spark Plug</b><span class="mono">SP-54321</span><strong>75,000</strong><small class="up">42 in stock</small></button></div>
-            <div><button type="button" class="tile" data-id="5" data-name="Front Wheel Hub" data-price="650000"><div class="pic">🛞</div><b>Front Wheel Hub</b><span class="mono">WH-20931</span><strong>650,000</strong><small class="down">2 left</small></button></div>
-            <div><button type="button" class="tile" data-id="6" data-name="Car Battery 60Ah" data-price="1150000"><div class="pic">🔋</div><b>Car Battery 60Ah</b><span class="mono">CB-60012</span><strong>1,150,000</strong><small class="up">5 in stock</small></button></div>
+
+                @{
+                    foreach (var p in Model.Products)
+                    {
+                        var stockCss  = p.Quantity <= 5 ? "down" : "up";
+                        var stockText = p.Quantity == 0 ? "Out of stock"
+                                      : p.Quantity <= 5 ? $"Only {p.Quantity} left"
+                                      : $"{p.Quantity} in stock";
+
+                            <div><button type="button" class="tile" data-id="@p.Id" data-name="@p.Name" data-price="@p.Price.ToString(CultureInfo.InvariantCulture)" disabled="@(p.Quantity == 0)"><div class="pic">💨</div><b>@p.Name</b><span class="mono">@p.PartNumber</span><strong>@p.Price.ToString(CultureInfo.InvariantCulture)</strong><small class="@stockCss">@stockText</small></button></div>
+                        
+                    }} 
         </div>
     </div>
 
@@ -32,7 +43,7 @@
         <div class="cart-foot">
             <div class="line"><span>Subtotal</span><span class="num" id="subtotal">0 UZS</span></div>
             <div class="line"><label for="discount">Discount %</label><input class="form-control text-end" id="discount" name="DiscountPercent" type="number" min="0" max="100" value="0"></div>
-            <div class="line"><label for="payment">Payment</label><select class="form-select" id="payment" name="PaymentMethod"><option>Cash</option><option>Card (Uzcard / Humo)</option><option>Bank transfer</option></select></div>
+            <div class="line"><label for="payment">Payment</label><select class="form-select" id="payment" name="PaymentMethod"><option value="Cash">Cash</option><option value="Card">Card (Uzcard / Humo)</option><option value="Transfer">Bank transfer</option></select></div>
             <div class="line total"><span>Total</span><span id="total">0 UZS</span></div>
             <button type="submit" class="btn btn-success" id="checkout">Complete Sale</button>
         </div>
