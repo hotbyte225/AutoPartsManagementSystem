@@ -2,6 +2,7 @@
 
 using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AutoPartsManagementSystem.Models
 {
@@ -21,6 +22,11 @@ namespace AutoPartsManagementSystem.Models
 
         [AllowedValues("Individual", "Company"), StringLength(20)]
         public string Type { get; set; } = "Individual";
-
+        [NotMapped]
+        public string Initials => string.Concat(
+            FullName.Split(' ', StringSplitOptions.RemoveEmptyEntries)
+                    .Take(2)
+                    .Select(w => w[0])
+        ).ToUpper();
     }
 }

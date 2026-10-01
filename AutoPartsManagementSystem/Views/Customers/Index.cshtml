@@ -1,3 +1,5 @@
+@model List<Customer>
+
 @{
     ViewBag.Title = "Customers";
 }
@@ -18,11 +20,10 @@
         <table class="table" id="custTable">
             <thead><tr><th>Customer</th><th>Type</th><th>Phone</th><th>Email</th><th>Orders</th><th class="right">Total spent (UZS)</th><th></th></tr></thead>
             <tbody>
-                <tr><td><div class="product"><span class="avatar sm soft">AK</span><span>Azizbek Karimov</span></div></td><td><span class="badge off">Individual</span></td><td class="mono">+998 90 123 45 67</td><td class="muted">azizbek@mail.uz</td><td class="num text-primary">12</td><td class="num right">14,820,000</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="1" method="post" data-confirm="Delete Azizbek Karimov?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
-                <tr><td><div class="product"><span class="avatar sm soft">AS</span><span>Auto Service Pro</span></div></td><td><span class="badge violet">Company</span></td><td class="mono">+998 71 200 10 10</td><td class="muted">info@autoservice.uz</td><td class="num text-primary">48</td><td class="num right">96,400,000</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="2" method="post" data-confirm="Delete Auto Service Pro?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
-                <tr><td><div class="product"><span class="avatar sm soft">SJ</span><span>Sardor Jabborov</span></div></td><td><span class="badge off">Individual</span></td><td class="mono">+998 91 111 22 33</td><td class="muted">sardor@mail.uz</td><td class="num text-primary">8</td><td class="num right">6,150,000</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="3" method="post" data-confirm="Delete Sardor Jabborov?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
-                <tr><td><div class="product"><span class="avatar sm soft">RY</span><span>Rustam Yo'ldoshev</span></div></td><td><span class="badge off">Individual</span></td><td class="mono">+998 93 660 77 88</td><td class="muted">rustam@mail.uz</td><td class="num text-primary">5</td><td class="num right">9,870,000</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="4" method="post" data-confirm="Delete Rustam Yo'ldoshev?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
-                <tr><td><div class="product"><span class="avatar sm soft">UA</span><span>Umid Abdullayev</span></div></td><td><span class="badge off">Individual</span></td><td class="mono">+998 93 650 44 33</td><td class="muted">umid@mail.uz</td><td class="num text-primary">7</td><td class="num right">5,300,000</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="5" method="post" data-confirm="Delete Umid Abdullayev?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
+                @foreach (var c in Model)
+                {
+                <tr><td><div class="product"><span class="avatar sm soft">@c.Initials</span><span>@c.FullName</span></div></td><td><span class="badge off">@c.Type</span></td><td class="mono">@c.Phone</td><td class="muted">@c.Email</td><td class="num text-primary">12</td><td class="num right">14,820,000</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="1" method="post" data-confirm="Delete Azizbek Karimov?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
+                }
             </tbody>
         </table>
     </div>
