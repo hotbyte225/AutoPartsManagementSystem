@@ -1,5 +1,6 @@
 ﻿using AutoPartsManagementSystem.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartsManagementSystem.Controllers
 {
@@ -21,7 +22,11 @@ namespace AutoPartsManagementSystem.Controllers
 
         public IActionResult Index()
         {
-            return View(_db.Customers.ToList());
+             
+            return View(_db.Customers
+                .Include(c => c.Orders)
+                .OrderBy(c => c.FullName)
+                .ToList());
         }
 
         [HttpPost, ValidateAntiForgeryToken]
