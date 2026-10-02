@@ -1,6 +1,7 @@
 ﻿using AutoPartsManagementSystem.Models;
 using AutoPartsManagementSystem.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections;
 
 
 
@@ -23,7 +24,7 @@ namespace AutoPartsManagementSystem.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Checkout(CheckoutInput input)
+        public IActionResult Checkout(CheckoutInput input, int id)
         {
             if (!input.Items.Any())
             {
@@ -40,7 +41,31 @@ namespace AutoPartsManagementSystem.Controllers
                 TempData["Toast"] = string.Join(" ", errors);
                 return RedirectToAction("Index");
             }
-            TempData["Toast"] = $"Received {input.Items.Count} items";
+            
+
+            
+            var ids = input.Items.Select(i => i.ProductId).ToList();
+            var products = _db.Products.Where(p => ids.Contains(p.Id)).ToList();
+
+            foreach (var item in input.Items)
+            {
+                var product = products.FirstOrDefault(p => p.Id == item.ProductId);
+                if (product == null)
+                {
+                    TempData["ToastType"] = "error";
+                    TempData["Toast"] = "Product not found";
+                    return RedirectToAction("Index");
+                }
+                if (product.Quantity < item.Quantity)
+                {
+                    TempData["ToastType"] = "error";
+                    TempData["Toast"] = $"Not enough stock for {product.Name}(available: { product.Quantity})";
+                    return RedirectToAction("Index");
+                }
+            }
+            
+
+            TempData["Toast"] = "Stock OK";
             return RedirectToAction("Index");
         }
     }
