@@ -1,3 +1,5 @@
+@model List<Order>
+
 @{
     ViewBag.Title = "Orders";
 }
@@ -19,7 +21,13 @@
         <table class="table" id="ordersTable">
             <thead><tr><th>Invoice</th><th>Customer</th><th>Items</th><th class="right">Amount (UZS)</th><th>Payment</th><th>Status</th><th>Date</th><th></th></tr></thead>
             <tbody>
-                <tr><td><a class="link" asp-action="Details" asp-route-id="1048">#INV-1048</a></td><td>Azizbek Karimov</td><td class="mono">3</td><td class="num right">1,250,000</td><td class="muted">Cash</td><td><span class="badge ok">Paid</span></td><td class="muted">Today 16:42</td><td><a asp-action="Details" asp-route-id="1048" class="icon-btn view" title="View">›</a></td></tr>
+
+                @foreach (var o in Model)
+                {
+                    var statusCss = o.Status == "Cancelled" ? "bad" : o.Status == "Pending" ? "warn" : "ok";
+                    <tr><td><a class="link" asp-action="Details" asp-route-id="@o.Id">#INV-@o.Id</a></td><td>@(o.Customer?.FullName ?? "Walk-in")</td><td class="mono">@o.Items.Count</td><td class="num right">@o.Total.ToString("N0")</td><td class="muted">@o.PaymentMethod</td><td><span class="badge @statusCss">@o.Status</span></td><td class="muted">@o.OrderDate.ToString("dd.MM.yyyy HH:mm")</td><td><a asp-action="Details" asp-route-id="@o.Id" class="icon-btn view" title="View">›</a></td></tr>
+                }
+                
                 <tr><td><a class="link" asp-action="Details" asp-route-id="1047">#INV-1047</a></td><td>Auto Service Pro</td><td class="mono">8</td><td class="num right">3,870,000</td><td class="muted">Bank transfer</td><td><span class="badge ok">Paid</span></td><td class="muted">Today 15:18</td><td><a asp-action="Details" asp-route-id="1047" class="icon-btn view" title="View">›</a></td></tr>
                 <tr><td><a class="link" asp-action="Details" asp-route-id="1046">#INV-1046</a></td><td>Sardor Jabborov</td><td class="mono">2</td><td class="num right">960,000</td><td class="muted">Card</td><td><span class="badge warn">Pending</span></td><td class="muted">Today 12:05</td><td><a asp-action="Details" asp-route-id="1046" class="icon-btn view" title="View">›</a></td></tr>
                 <tr><td><a class="link" asp-action="Details" asp-route-id="1045">#INV-1045</a></td><td>Rustam Yo'ldoshev</td><td class="mono">5</td><td class="num right">4,310,000</td><td class="muted">Cash</td><td><span class="badge info">Processing</span></td><td class="muted">Yesterday 18:30</td><td><a asp-action="Details" asp-route-id="1045" class="icon-btn view" title="View">›</a></td></tr>
