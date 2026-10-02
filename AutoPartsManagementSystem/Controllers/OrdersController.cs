@@ -21,5 +21,25 @@ namespace AutoPartsManagementSystem.Controllers
                 .OrderByDescending(o => o.OrderDate)
                 .ToList());                              
         }
+
+        [HttpGet]
+        public IActionResult Details(int id)
+        {
+            var order = _db.Orders
+                    .Include(o => o.Customer)
+                    .Include(o => o.Cashier)
+                    .Include(o => o.Items)
+                        .ThenInclude(i => i.Product)
+
+                    .FirstOrDefault(o => o.Id == id);
+                    
+            if (order == null)
+            {
+                return NotFound();
+            }
+
+            return View(order);
+
+        }
     }
 }
