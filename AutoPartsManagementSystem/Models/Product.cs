@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AutoPartsManagementSystem.Models
 {
+
     [Index(nameof(PartNumber), IsUnique = true)]
     public class Product
     {
@@ -28,5 +29,8 @@ namespace AutoPartsManagementSystem.Models
 
         [StringLength(150)]
         public string? Description { get; set; }
+        
+        [Timestamp]
+        public byte[]? RowVersion { get; set; }
     }
 }

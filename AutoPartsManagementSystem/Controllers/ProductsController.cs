@@ -82,10 +82,24 @@ namespace AutoPartsManagementSystem.Controllers
                 LoadCategories();
                 return View(product);
             }
-            _db.Products.Update(product);
-            _db.SaveChanges();
-            TempData["Toast"] = "Product updated.";
-            return RedirectToAction("Index");
+
+
+            try
+            {
+                _db.Products.Update(product);
+                _db.SaveChanges();
+                TempData["Toast"] = "Product updated.";
+                return RedirectToAction("Index");
+
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                
+                ModelState.AddModelError("", "This product was modified by someone else. Please reload the page.");
+                LoadCategories();
+                return View(product);
+            }
+            
 
 
         }

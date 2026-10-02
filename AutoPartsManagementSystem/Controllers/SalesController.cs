@@ -1,6 +1,7 @@
 ﻿using AutoPartsManagementSystem.Models;
 using AutoPartsManagementSystem.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
 
 
@@ -115,8 +116,20 @@ namespace AutoPartsManagementSystem.Controllers
             decimal discount = subtotal * input.DiscountPercent / 100;
             order.Total = subtotal - discount;
 
-            _db.Orders.Add(order);
-            _db.SaveChanges();
+
+            try
+            {
+                _db.Orders.Add(order);
+                _db.SaveChanges();
+                
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                TempData["ToastType"] = "error";
+                TempData["Toast"] = "Stock was changed by another sale. Please try again.";
+                return RedirectToAction("Index");
+            }
+            
 
             TempData["Toast"] = $"Sale completed: #INV-{order.Id}";
             return RedirectToAction("Index");
