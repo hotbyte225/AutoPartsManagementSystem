@@ -53,59 +53,7 @@ namespace AutoPartsManagementSystem.Controllers
             return View();
         }
 
-        [HttpGet]
-        public IActionResult Register()
-        {
-            return View();
-        }
-
-        [HttpPost, ValidateAntiForgeryToken]
-        public async Task<IActionResult> Register(
-            string fullName,
-            string email,
-            string password,
-            string confirmPassword)
-        {
-            if (password != confirmPassword)
-            {
-                ModelState.AddModelError(
-                    "",
-                    "Passwordlar bir xil emas.");
-
-                return View();
-            }
-
-            var user = new ApplicationUser
-            {
-                UserName = email,
-                Email = email,
-                FullName = fullName
-            };
-
-            var result = await _userManager.CreateAsync(
-                user,
-                password);
-
-            if (result.Succeeded)
-            {
-                await _signInManager.SignInAsync(
-                    user,
-                    isPersistent: false);
-
-                return RedirectToAction(
-                    "Index",
-                    "Dashboard");
-            }
-
-            foreach (var error in result.Errors)
-            {
-                ModelState.AddModelError(
-                    "",
-                    error.Description);
-            }
-
-            return View();
-        }
+        
 
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
