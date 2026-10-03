@@ -23,7 +23,7 @@ namespace AutoPartsManagementSystem.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost,ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(
             string email,
             string password,
@@ -59,7 +59,7 @@ namespace AutoPartsManagementSystem.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Register(
             string fullName,
             string email,
@@ -107,7 +107,7 @@ namespace AutoPartsManagementSystem.Controllers
             return View();
         }
 
-        [HttpPost]
+        [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
