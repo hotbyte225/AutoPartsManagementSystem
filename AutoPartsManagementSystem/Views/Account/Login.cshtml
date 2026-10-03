@@ -2,7 +2,7 @@
     ViewBag.Title = "Sign in";
     Layout = "_AuthLayout";
 }
-<form asp-controller="Account" asp-action="Login" method="post" class="auth-card">
+<form asp-controller="Account" asp-action="Login" method="post" asp-route-returnUrl="@Context.Request.Query["ReturnUrl"]" class="auth-card">
     <div class="brand"><b>AP</b></div>
     <h1>Sign in</h1>
     <div class="muted">Welcome back! Enter your account details.</div>

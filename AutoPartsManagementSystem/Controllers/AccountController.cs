@@ -1,4 +1,5 @@
 ﻿using AutoPartsManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,18 +17,22 @@ namespace AutoPartsManagementSystem.Controllers
             _userManager = userManager;
             _signInManager = signInManager;
         }
-
+        
+        [AllowAnonymous]
         [HttpGet]
         public IActionResult Login()
         {
             return View();
         }
-
+        
+        [AllowAnonymous]
         [HttpPost,ValidateAntiForgeryToken]
         public async Task<IActionResult> Login(
             string email,
             string password,
-            bool rememberMe = false)
+            string? returnUrl,
+            bool rememberMe = false
+            )
         {
             var user = await _userManager.FindByEmailAsync(email);
 
@@ -41,11 +46,23 @@ namespace AutoPartsManagementSystem.Controllers
                 user.UserName,
                 password,
                 rememberMe,
-                lockoutOnFailure: false);
+                lockoutOnFailure: true);
 
             if (result.Succeeded)
             {
+                if (Url.IsLocalUrl(returnUrl))
+                {
+                    return Redirect(returnUrl);
+                }
+                
                 return RedirectToAction("Index", "Dashboard");
+            }
+
+            if (result.IsLockedOut)
+            {
+                ModelState.AddModelError("", "The account has been temporarily blocked. Please try again in 5 minutes.");
+
+                return View();
             }
 
             ModelState.AddModelError("", "Email yoki password noto‘g‘ri.");
@@ -53,8 +70,8 @@ namespace AutoPartsManagementSystem.Controllers
             return View();
         }
 
-        
 
+       
         [HttpPost, ValidateAntiForgeryToken]
         public async Task<IActionResult> Logout()
         {
@@ -63,6 +80,12 @@ namespace AutoPartsManagementSystem.Controllers
             return RedirectToAction(
                 "Login",
                 "Account");
+        }
+
+        
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }
