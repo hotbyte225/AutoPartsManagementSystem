@@ -1,11 +1,12 @@
 ﻿using AutoPartsManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartsManagementSystem.Controllers
 {
-  
+    [Authorize(Roles = Roles.Admin + "," + Roles.Manager + "," + Roles.Cashier)]
     public class ProductsController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -22,6 +23,7 @@ namespace AutoPartsManagementSystem.Controllers
             return View(_db.Products.Include(p => p.Category).ToList());
         }
 
+        [Authorize(Roles = Roles.Admin + "," + Roles.Manager)]
         [HttpGet]
         public IActionResult Create()
         {
@@ -29,7 +31,7 @@ namespace AutoPartsManagementSystem.Controllers
             return View(new Product());
         }
 
-
+        [Authorize(Roles = Roles.Admin + "," + Roles.Manager)]
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Create(Product product)
         {
@@ -53,6 +55,7 @@ namespace AutoPartsManagementSystem.Controllers
             return RedirectToAction("Index");
         }
 
+        [Authorize(Roles = Roles.Admin + "," + Roles.Manager)]
         [HttpGet]
         public IActionResult Edit(int id)
         {
@@ -64,6 +67,8 @@ namespace AutoPartsManagementSystem.Controllers
             LoadCategories();
             return View(product);
         }
+
+        [Authorize(Roles = Roles.Admin + "," + Roles.Manager)]
         [HttpPost,ValidateAntiForgeryToken]
         public IActionResult Edit(int id,Product product)
         {
@@ -103,6 +108,8 @@ namespace AutoPartsManagementSystem.Controllers
 
 
         }
+
+        [Authorize(Roles = Roles.Admin + "," + Roles.Manager)]
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {

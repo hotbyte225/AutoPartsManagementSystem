@@ -1,11 +1,15 @@
 ﻿using AutoPartsManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
 namespace AutoPartsManagementSystem.Controllers
 {
+    [Authorize(Roles = Roles.Admin + "," + Roles.Manager + "," + Roles.Cashier)]
+
     public class DashboardController : Controller
     {
+        
         public IActionResult Index()
         {
             return View();

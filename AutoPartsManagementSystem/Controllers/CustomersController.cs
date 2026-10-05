@@ -1,9 +1,12 @@
 ﻿using AutoPartsManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartsManagementSystem.Controllers
 {
+    [Authorize(Roles = Roles.Admin + "," + Roles.Manager + "," + Roles.Cashier)]
+
     public class CustomersController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -90,6 +93,8 @@ namespace AutoPartsManagementSystem.Controllers
             return RedirectToAction("Index");
         }
 
+
+        [Authorize(Roles = Roles.Admin + "," + Roles.Manager)]
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Delete(int id)
         {

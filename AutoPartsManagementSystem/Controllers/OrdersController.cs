@@ -1,9 +1,12 @@
 ﻿using AutoPartsManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartsManagementSystem.Controllers
 {
+    [Authorize(Roles = Roles.Admin + "," + Roles.Manager + "," + Roles.Cashier)]
+
     public class OrdersController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -11,7 +14,7 @@ namespace AutoPartsManagementSystem.Controllers
         {
             _db = db;
         }
-
+        
         public IActionResult Index()
         {
 
@@ -22,6 +25,7 @@ namespace AutoPartsManagementSystem.Controllers
                 .ToList());                              
         }
 
+        
         [HttpGet]
         public IActionResult Details(int id)
         {

@@ -1,7 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoPartsManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AutoPartsManagementSystem.Controllers
 {
+    [Authorize(Roles = Roles.Admin + "," + Roles.Manager)]
+
     public class WarehouseController : Controller
     {
         public IActionResult Index()

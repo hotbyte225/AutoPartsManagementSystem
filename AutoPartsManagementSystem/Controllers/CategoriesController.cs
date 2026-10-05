@@ -1,9 +1,11 @@
 ﻿using AutoPartsManagementSystem.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartsManagementSystem.Controllers
 {
+    [Authorize(Roles = Roles.Admin + "," + Roles.Manager)]
     public class CategoriesController : Controller
     {
         private readonly ApplicationDbContext _db;

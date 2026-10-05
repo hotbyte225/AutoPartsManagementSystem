@@ -1,5 +1,6 @@
 ﻿using AutoPartsManagementSystem.Models;
 using AutoPartsManagementSystem.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
@@ -8,6 +9,7 @@ using System.Security.Claims;
 
 namespace AutoPartsManagementSystem.Controllers
 {
+    [Authorize(Roles = Roles.Admin + "," + Roles.Manager + "," + Roles.Cashier)]
     public class SalesController : Controller
     {
         private readonly ApplicationDbContext _db;
@@ -16,6 +18,7 @@ namespace AutoPartsManagementSystem.Controllers
         {
             _db = db;
         }
+        
         public IActionResult Index()
         {
             var vm = new SaleViewModel();
@@ -24,6 +27,8 @@ namespace AutoPartsManagementSystem.Controllers
             return View(vm);
         }
 
+
+        
         [HttpPost, ValidateAntiForgeryToken]
         public IActionResult Checkout(CheckoutInput input)
         {

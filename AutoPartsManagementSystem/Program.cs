@@ -19,7 +19,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
 builder.Services.AddAuthorization(options =>
 {
     options.FallbackPolicy = new AuthorizationPolicyBuilder()
-        .RequireAuthenticatedUser()
+        .RequireRole(Roles.Admin, Roles.Manager, Roles.Cashier)
         .Build();
 });
 // Add services to the container.
