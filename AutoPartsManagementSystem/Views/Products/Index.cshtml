@@ -4,18 +4,22 @@
 
 
 @{
-    
+
     ViewBag.Title = "Products";
-    
-    
-    
+
+    var cashierRole = User.IsInRole(Roles.Cashier);
+
 }
 <div class="page">
     <div>
         <h1>Products</h1>
         <div class="muted">@Model.Count() parts in catalog</div>
     </div>
-    <a asp-controller="Products" asp-action="Create" class="btn btn-primary btn-sm">+ Add Product</a>
+    @if (!cashierRole)
+    {
+        <a asp-controller="Products" asp-action="Create" class="btn btn-primary btn-sm">+ Add Product</a>
+    }
+    
 </div>
 
 <div class="tablebox">
@@ -46,14 +50,18 @@
                             </td>
                         <td class="num right">@p.Price.ToString("N0")</td>
                         <td><span class="badge @stockCss">@(p.Quantity == 0 ? "Out" : p.Quantity + " pcs")</span></td>
-                        <td>
-                            <div class="actions">
-                                <a asp-action="Edit" asp-route-id="@p.Id" class="icon-btn edit" title="Edit">✎</a>
-                                <form asp-action="Delete" asp-route-id="@p.Id" method="post" data-confirm="Delete @p.Name?">
-                                    <button type="submit" class="icon-btn del" title="Delete">✕</button>
-                                </form>
-                            </div>
-                        </td>
+                        @if (!cashierRole)
+                        {
+                            <td>
+                                <div class="actions">
+                                    <a asp-action="Edit" asp-route-id="@p.Id" class="icon-btn edit" title="Edit">✎</a>
+                                    <form asp-action="Delete" asp-route-id="@p.Id" method="post" data-confirm="Delete @p.Name?">
+                                        <button type="submit" class="icon-btn del" title="Delete">✕</button>
+                                    </form>
+                                </div>
+                            </td>
+                        }
+                        
                     </tr>
                 }
             </tbody>

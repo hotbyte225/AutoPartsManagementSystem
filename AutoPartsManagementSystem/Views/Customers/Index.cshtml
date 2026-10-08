@@ -2,6 +2,7 @@
 
 @{
     ViewBag.Title = "Customers";
+    var cashierRole = User.IsInRole(Roles.Cashier);
 }
 <div class="page">
     <div>
@@ -32,7 +33,28 @@
                                 <span class="badge off">@c.Type</span>
                             }
                             
-                        </td><td class="mono">@c.Phone</td><td class="muted">@c.Email</td><td class="num text-primary">@c.Orders.Count</td><td class="num right">@(c.Orders.Sum(i => i.Total).ToString("N0")) UZS</td><td><div class="actions"><a asp-action="Edit" asp-route-id="@c.Id"><button class="icon-btn edit" title="Edit">✎</button></a><form asp-action="Delete" asp-route-id="@c.Id" method="post" data-confirm="Delete @c.FullName?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
+                        </td>
+                        <td class="mono">@c.Phone</td>
+                        <td class="muted">@c.Email</td>
+                        <td class="num text-primary">@c.Orders.Count</td>
+                        <td class="num right">@(c.Orders.Sum(i => i.Total).ToString("N0")) UZS</td>
+                      
+                            <td><div class="actions">
+                                <a asp-action="Edit" asp-route-id="@c.Id">
+                                    <button class="icon-btn edit" title="Edit">✎</button>
+                                </a>
+                                
+
+                                @if (!cashierRole)
+                                {
+                                <form asp-action="Delete" asp-route-id="@c.Id" method="post" data-confirm="Delete @c.FullName?">
+                                    <button class="icon-btn del" title="Delete">✕</button></form>
+                                    }
+                                    </div>
+                                    </td>
+                                        
+                        
+                  </tr>
                 }
             </tbody>
         </table>

@@ -3,6 +3,14 @@
     var title = ViewBag.Title ?? "AutoParts";
     var current = ViewContext.RouteData.Values["controller"]?.ToString();
     string Active(string name) => current == name ? "active" : "";
+    var canManage = User.IsInRole(Roles.Admin) || User.IsInRole(Roles.Manager);
+
+    var currentRole = User.IsInRole(Roles.Admin) ? "Admin"
+                    : User.IsInRole(Roles.Manager) ? "Manager"
+                    : User.IsInRole(Roles.Cashier) ? "Cashier"
+                    : "No role";
+
+   
 }
 <!doctype html>
 <html lang="en">
@@ -26,14 +34,33 @@
             <nav>
                 <a asp-controller="Dashboard" asp-action="Index" class="@Active("Dashboard")"><i>▦</i>Dashboard</a>
                 <a asp-controller="Products" asp-action="Index" class="@Active("Products")"><i>◫</i>Products</a>
-                <a asp-controller="Categories" asp-action="Index" class="@Active("Categories")"><i>◈</i>Categories</a>
-                <a asp-controller="Warehouse" asp-action="Index" class="@Active("Warehouse")"><i>▤</i>Warehouse</a>
+                
+                @{
+                        if (canManage)
+                        {
+                        <a asp-controller="Categories" asp-action="Index" class="@Active("Categories")"><i>◈</i>Categories</a>
+                        <a asp-controller="Warehouse" asp-action="Index" class="@Active("Warehouse")"><i>▤</i>Warehouse</a>
+                        }
+                    }
+                
                 <a asp-controller="Sales" asp-action="Index" class="@Active("Sales")"><i>↗</i>Sales</a>
                 <a asp-controller="Orders" asp-action="Index" class="@Active("Orders")"><i>□</i>Orders</a>
                 <a asp-controller="Customers" asp-action="Index" class="@Active("Customers")"><i>♙</i>Customers</a>
-                <a asp-controller="Reports" asp-action="Index" class="@Active("Reports")"><i>▥</i>Reports</a>
-                <a asp-controller="Users" asp-action="Index" class="@Active("Users")"><i>♙</i>Users</a>
-                <a asp-controller="Settings" asp-action="Index" class="@Active("Settings")"><i>⚙</i>Settings</a>
+                @{
+                        if (canManage)
+                        {
+                        <a asp-controller="Reports" asp-action="Index" class="@Active("Reports")"><i>▥</i>Reports</a>
+                        }
+                    }
+                
+                @{
+                        if (User.IsInRole(Roles.Admin))
+                        {
+                        <a asp-controller="Users" asp-action="Index" class="@Active("Users")"><i>♙</i>Users</a>
+                        <a asp-controller="Settings" asp-action="Index" class="@Active("Settings")"><i>⚙</i>Settings</a>
+                        }
+                    }
+                
             </nav>
             <div class="bottom">
                 <span class="online">●</span> Store online
@@ -50,7 +77,7 @@
                 <div class="search">⌕ <input id="globalSearch" placeholder="Search products, orders, customers..." aria-label="Search"></div>
                 <div class="user">
                     <span class="avatar">ZS</span>
-                    <span><b>Zufar Salayev</b><small>Administrator</small></span>
+                    <span><b>Zufar Salayev</b><small>@currentRole</small></span>
                 </div>
             </header>
             <section class="content">
