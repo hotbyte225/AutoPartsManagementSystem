@@ -1,5 +1,8 @@
+@model List<UserListItem>
+@using System.Security.Claims
 @{
     ViewBag.Title = "Users";
+    var currentUserID = User.FindFirstValue(ClaimTypes.NameIdentifier);
 }
 <div class="page">
     <div>
@@ -14,10 +17,55 @@
         <table class="table">
             <thead><tr><th>User</th><th>Email</th><th>Role</th><th>Status</th><th>Last login</th><th></th></tr></thead>
             <tbody>
-                <tr><td><div class="product"><span class="avatar sm">ZS</span><span>Zufar Salayev</span></div></td><td class="muted">admin@autoparts.uz</td><td><span class="badge violet">Admin</span></td><td><span class="dot up">Active</span></td><td class="muted">Today 16:50</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button></div></td></tr>
-                <tr><td><div class="product"><span class="avatar sm dark">DM</span><span>Dilshod Mirzayev</span></div></td><td class="muted">manager@autoparts.uz</td><td><span class="badge info">Manager</span></td><td><span class="dot up">Active</span></td><td class="muted">Today 09:12</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="2" method="post" data-confirm="Delete Dilshod Mirzayev?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
-                <tr><td><div class="product"><span class="avatar sm dark">MN</span><span>Madina Nazarova</span></div></td><td class="muted">cashier@autoparts.uz</td><td><span class="badge ok">Cashier</span></td><td><span class="dot up">Active</span></td><td class="muted">Today 08:58</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="3" method="post" data-confirm="Delete Madina Nazarova?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
-                <tr><td><div class="product"><span class="avatar sm dark">JT</span><span>Jasur Toshmatov</span></div></td><td class="muted">jasur@autoparts.uz</td><td><span class="badge ok">Cashier</span></td><td><span class="dot text-secondary">Inactive</span></td><td class="muted">12 Aug 2026</td><td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button><form asp-action="Delete" asp-route-id="4" method="post" data-confirm="Delete Jasur Toshmatov?"><button class="icon-btn del" title="Delete">✕</button></form></div></td></tr>
+                @foreach (var user in Model)
+                {
+                    <tr>
+                        <td>
+                            <div class="product">
+                                <span class="avatar sm">@user.Initials</span>
+                                @if (user.Id == currentUserID)
+                                {
+                                    <span>@user.FullName (You)  </span>
+                                }
+                                else
+                                {
+                                    <span>@user.FullName </span>
+                                }
+
+                                
+                            
+                            </div></td>
+                                <td class="muted">@user.Email</td>
+                            @if (user.Role == "Admin")
+                            {
+                            <td><span class="badge violet">@user.Role</span></td>
+                            }else if (user.Role == "Manager")
+                            {
+                                <td><span class="badge warn">@user.Role</span></td>
+                            }else if (user.Role == "Cashier")
+                            {
+                                <td><span class="badge ok">@user.Role</span></td>
+                            }
+                            else
+                            {
+                                <td><span class="badge off">@user.Role</span></td>
+                            }
+                            @if (user.IsLocked)
+                            {
+                                <td><span class="dot down">Blocked</span></td>
+                            }
+                            else
+                            {
+                                <td><span class="dot up">Active</span></td>
+                            }
+                        
+                                    <td class="muted">Today 16:50</td>
+                                    <td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button>
+                                        </div></td>
+                                        </tr>
+                }
+                
+                
             </tbody>
         </table>
     </div>
