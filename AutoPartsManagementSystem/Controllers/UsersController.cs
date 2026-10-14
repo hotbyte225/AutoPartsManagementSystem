@@ -3,6 +3,7 @@ using AutoPartsManagementSystem.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.EntityFrameworkCore;
 
 namespace AutoPartsManagementSystem.Controllers
@@ -84,5 +85,81 @@ namespace AutoPartsManagementSystem.Controllers
             TempData["Toast"] = $"User {user.FullName} created.";
             return RedirectToAction("Index");
         }
+
+
+        [HttpGet]
+        public async Task<IActionResult> Edit(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            var userRole = await _userManager.GetRolesAsync(user);
+            var model = new EditUserInput
+            {
+                Id = user.Id,
+                FullName = user.FullName,
+                Email = user.Email ?? "",
+                Role = userRole.FirstOrDefault() ?? ""
+
+            };
+
+            return View(model);
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(EditUserInput input)
+        {
+            var user = await _userManager.FindByIdAsync(input.Id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var currentRoles = await _userManager.GetRolesAsync(user);
+            var currentRole = currentRoles.FirstOrDefault() ?? "";
+            
+            if (_userManager.GetUserId(User) == user.Id && input.Role != currentRole)
+            {
+                ModelState.AddModelError(nameof(input.Role), "You cannot change your own role.");
+            }
+            var email = input.Email.Trim();
+
+            var existing = await _userManager.FindByEmailAsync(email);
+            if (existing != null && existing.Id != user.Id)
+            {
+                ModelState.AddModelError(nameof(input.Email), "This email is already in use!");
+            }
+            if (!ModelState.IsValid)
+            {
+                return View(input);
+            }
+
+            user.FullName = input.FullName.Trim();
+            user.Email = email;
+            user.UserName = email;
+
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                foreach (var error in result.Errors)
+                {
+                    ModelState.AddModelError("", error.Description);
+                }
+                return View(input);
+            }
+            if (input.Role != currentRole)
+            {
+                await _userManager.RemoveFromRolesAsync(user, currentRoles);
+                await _userManager.AddToRoleAsync(user, input.Role);
+            }
+
+            TempData["Toast"] = "User updated!";
+            return RedirectToAction("Index");
+        }
+
     }
 }

@@ -60,7 +60,10 @@
                             }
                         
                                     <td class="muted">Today 16:50</td>
-                                    <td><div class="actions"><button class="icon-btn edit" title="Edit">✎</button>
+                                    <td><div class="actions">
+                                        <a asp-action="Edit" asp-route-id="@user.Id">
+                                        <button class="icon-btn edit" title="Edit">✎</button>
+                                        </a>
                                         </div></td>
                                         </tr>
                 }
