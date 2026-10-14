@@ -50,13 +50,13 @@
                             {
                                 <td><span class="badge off">@user.Role</span></td>
                             }
-                            @if (user.IsLocked)
-                            {
-                                <td><span class="dot down">Blocked</span></td>
-                            }
-                            else
-                            {
-                                <td><span class="dot up">Active</span></td>
+                                @if (user.IsLocked)
+                                {
+                                    <td><span class="dot down">Blocked</span></td>
+                                }
+                                else
+                                {
+                                    <td><span class="dot up">Active</span></td>
                             }
                         
                                     <td class="muted">Today 16:50</td>
@@ -64,6 +64,22 @@
                                         <a asp-action="Edit" asp-route-id="@user.Id">
                                         <button class="icon-btn edit" title="Edit">✎</button>
                                         </a>
+
+                                        @if (user.Id != currentUserID)
+                                        {
+                                            if (user.IsLocked)
+                                            {
+                                                <form asp-action="Unblock" asp-route-id="@user.Id" method="post">
+                                                    <button type="submit" class="icon-btn view" title="Unblock">↺</button>
+                                                </form>
+                                            }
+                                            else
+                                            {
+                                                <form asp-action="Block" asp-route-id="@user.Id" method="post" data-confirm="Block @user.FullName?">
+                                                    <button type="submit" class="icon-btn del" title="Block">⊘</button>
+                                                </form>
+                                            }
+                                        }
                                         </div></td>
                                         </tr>
                 }

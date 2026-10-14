@@ -1,6 +1,7 @@
 ﻿using AutoPartsManagementSystem.Models;
 using AutoPartsManagementSystem.ViewModels;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -158,6 +159,50 @@ namespace AutoPartsManagementSystem.Controllers
             }
 
             TempData["Toast"] = "User updated!";
+            return RedirectToAction("Index");
+        }
+        [HttpPost, ValidateAntiForgeryToken]
+        public async Task<IActionResult> Block(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+            
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            
+            if (_userManager.GetUserId(User) == user.Id)
+            {
+                TempData["ToastType"] = "error";
+                TempData["Toast"] = "You cannot block your accout!";
+                return RedirectToAction("Index");
+            }
+
+
+            await _userManager.SetLockoutEnabledAsync(user, true);
+            await _userManager.SetLockoutEndDateAsync(user, DateTimeOffset.MaxValue);
+            await _userManager.UpdateSecurityStampAsync(user);
+
+            TempData["Toast"] = "User blocked!";
+            return RedirectToAction("Index");
+        }
+
+        [HttpPost,ValidateAntiForgeryToken]
+
+        public async Task<IActionResult> Unblock(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            await _userManager.SetLockoutEndDateAsync(user, null);
+            await _userManager.ResetAccessFailedCountAsync(user);
+
+            TempData["Toast"] = "User unblocked!";
             return RedirectToAction("Index");
         }
 
