@@ -206,5 +206,45 @@ namespace AutoPartsManagementSystem.Controllers
             return RedirectToAction("Index");
         }
 
+
+        [HttpPost,ValidateAntiForgeryToken]
+        public async Task<IActionResult> ResetPassword(ResetPasswordInput input)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values
+                   .SelectMany(v => v.Errors)
+                   .Select(e => e.ErrorMessage);
+                TempData["ToastType"] = "error";
+                TempData["Toast"] = string.Join(" ", errors);
+                return RedirectToAction("Index");
+            }
+
+            var user = await _userManager.FindByIdAsync(input.Id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+            
+
+            var token = await _userManager.GeneratePasswordResetTokenAsync(user);
+            var result = await _userManager.ResetPasswordAsync(user, token, input.NewPassword);
+
+            if (!result.Succeeded)
+            {
+ 
+                TempData["ToastType"] = "error";
+                TempData["Toast"] = string.Join(" ", result.Errors.Select(e => e.Description));
+                return RedirectToAction("Index");
+            }
+
+            await _userManager.UpdateSecurityStampAsync(user);
+
+            TempData["Toast"] = "Password changed!";
+            return RedirectToAction("Index");
+
+        }
+
     }
 }
