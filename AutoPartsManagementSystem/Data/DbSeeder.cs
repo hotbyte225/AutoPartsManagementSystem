@@ -31,9 +31,7 @@ namespace AutoPartsManagementSystem.Data
                 "Manager", Roles.Manager);
 
 
-            await EnsureUserAsync(userManager,
-                configuration["Seed:CashierEmail"], configuration["Seed:CashierPassword"],
-                "Cashier", Roles.Cashier);
+           
 
             var email = configuration["Seed:AdminEmail"];
             var password = configuration["Seed:AdminPassword"];
