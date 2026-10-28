@@ -1,5 +1,6 @@
 @using AutoPartsManagementSystem.Models
 
+
 @model List<Product>
 
 
@@ -38,7 +39,7 @@
             <tbody>
                 @foreach (var p in Model)
                 {
-                    var stockCss = p.Quantity == 0 ? "bad" : p.Quantity <= 6 ? "warn" : "ok";
+                    var stockCss = p.Quantity == 0 ? "bad" : p.Quantity <= StockRules.LowStockThreshold ? "warn" : "ok";
                     <tr>
                         <td><div class="product"><span>@p.Name</span></div></td>
                         <td class="mono">@p.PartNumber</td>
