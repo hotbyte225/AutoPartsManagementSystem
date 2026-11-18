@@ -17,74 +17,74 @@ namespace AutoPartsManagementSystem.Controllers
         }
 
         
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             
-            return View(_db.Products.Include(p => p.Category).ToList());
+            return View(await _db.Products.Include(p => p.Category).ToListAsync());
         }
 
         [Authorize(Roles = Roles.Admin + "," + Roles.Manager)]
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
-            LoadCategories();
+            LoadCategoriesAsync();
             return View(new Product());
         }
 
         [Authorize(Roles = Roles.Admin + "," + Roles.Manager)]
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Create(Product product)
+        public async Task<IActionResult> Create(Product product)
         {
 
-            if (_db.Products.Any(p => p.PartNumber == product.PartNumber))
+            if (await _db.Products.AnyAsync(p => p.PartNumber == product.PartNumber))
             {
                 ModelState.AddModelError(nameof(Product.PartNumber), "This part number already exists!");
 
             }
             if (!ModelState.IsValid)
             {
-                LoadCategories();
+                LoadCategoriesAsync();
                 return View(product);
             }
 
 
 
             _db.Products.Add(product);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             TempData["Toast"] = "Mahsulot qo'shildi.";
             return RedirectToAction("Index");
         }
 
         [Authorize(Roles = Roles.Admin + "," + Roles.Manager)]
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var product = _db.Products.Find(id);
+            var product = await _db.Products.FindAsync(id);
             if (product == null)
             {
                 return NotFound();
             }
-            LoadCategories();
+            LoadCategoriesAsync();
             return View(product);
         }
 
         [Authorize(Roles = Roles.Admin + "," + Roles.Manager)]
         [HttpPost,ValidateAntiForgeryToken]
-        public IActionResult Edit(int id,Product product)
+        public async Task<IActionResult> Edit(int id,Product product)
         {
             if (id != product.Id)
             {
                 return NotFound();
             } 
             
-            if (_db.Products.Any(p => p.PartNumber == product.PartNumber &&  p.Id != product.Id))
+            if (await _db.Products.AnyAsync(p => p.PartNumber == product.PartNumber &&  p.Id != product.Id))
             {
                 ModelState.AddModelError(nameof(Product.PartNumber), "This part number already exists!");
             }
 
             if (!ModelState.IsValid)
             {
-                LoadCategories();
+                LoadCategoriesAsync();
                 return View(product);
             }
 
@@ -92,7 +92,7 @@ namespace AutoPartsManagementSystem.Controllers
             try
             {
                 _db.Products.Update(product);
-                _db.SaveChanges();
+                await _db.SaveChangesAsync();
                 TempData["Toast"] = "Product updated.";
                 return RedirectToAction("Index");
 
@@ -101,7 +101,7 @@ namespace AutoPartsManagementSystem.Controllers
             {
                 
                 ModelState.AddModelError("", "This product was modified by someone else. Please reload the page.");
-                LoadCategories();
+                LoadCategoriesAsync();
                 return View(product);
             }
             
@@ -111,29 +111,29 @@ namespace AutoPartsManagementSystem.Controllers
 
         [Authorize(Roles = Roles.Admin + "," + Roles.Manager)]
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var product = _db.Products.Find(id);
+            var product = await _db.Products.FindAsync(id);
             if (product == null)
             {
                 return NotFound();
             }
-            if (_db.OrderItems.Any(p => p.ProductId == id))
+            if (await _db.OrderItems.AnyAsync(p => p.ProductId == id))
             {
                 TempData["ToastType"] = "error";
                 TempData["Toast"] = "Cannot delete: this product has been sold.";
                 return RedirectToAction("Index");
             }
             _db.Products.Remove(product);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             TempData["Toast"] = "Product removed.";
             return RedirectToAction("Index");
         }
 
-        private void LoadCategories()
+        private async Task LoadCategoriesAsync()
         {
 
-            ViewBag.Categories = new SelectList(_db.Categories.ToList(), "Id", "Name");
+            ViewBag.Categories = new SelectList(await _db.Categories.ToListAsync(), "Id", "Name");
         }
     }
 }

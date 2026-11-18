@@ -23,20 +23,20 @@ namespace AutoPartsManagementSystem.Controllers
         }
 
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
              
-            return View(_db.Customers
+            return View(await _db.Customers
                 .Include(c => c.Orders)
                 .OrderBy(c => c.FullName)
-                .ToList());
+                .ToListAsync());
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Create(Customer customer)
+        public async Task<IActionResult> Create(Customer customer)
         {
             Normalize(customer);
-            if (_db.Customers.Any(c => c.Phone == customer.Phone))
+            if (await _db.Customers.AnyAsync(c => c.Phone == customer.Phone))
             {
                 TempData["ToastType"] = "error";
                 TempData["Toast"] = "This phone number already exists!";
@@ -52,15 +52,15 @@ namespace AutoPartsManagementSystem.Controllers
                 return RedirectToAction("Index");
             }
             _db.Customers.Add(customer);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             TempData["Toast"] = "Customer added!";
             return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var customer = _db.Customers.Find(id);
+            var customer = await _db.Customers.FindAsync(id);
             if (customer == null)
             {
                 return NotFound();
@@ -69,7 +69,7 @@ namespace AutoPartsManagementSystem.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Customer customer)
+        public async Task<IActionResult> Edit(int id, Customer customer)
         {
             Normalize(customer);
 
@@ -77,7 +77,7 @@ namespace AutoPartsManagementSystem.Controllers
             {
                 return NotFound();
             }
-            if (_db.Customers.Any(c => c.Phone == customer.Phone && c.Id != customer.Id))
+            if (await _db.Customers.AnyAsync(c => c.Phone == customer.Phone && c.Id != customer.Id))
             {
 
                 ModelState.AddModelError(nameof(Customer.Phone), "This phone number already exists!");
@@ -88,7 +88,7 @@ namespace AutoPartsManagementSystem.Controllers
                 return View(customer);
             }
             _db.Customers.Update(customer);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             TempData["Toast"] = "Customer updated!";
             return RedirectToAction("Index");
         }
@@ -96,21 +96,21 @@ namespace AutoPartsManagementSystem.Controllers
 
         [Authorize(Roles = Roles.Admin + "," + Roles.Manager)]
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var customer = _db.Customers.Find(id);
+            var customer = await _db.Customers.FindAsync(id);
             if (customer == null)
             {
                 return NotFound();
             }
-            if (_db.Orders.Any(p => p.CustomerId == id))
+            if (await _db.Orders.AnyAsync(p => p.CustomerId == id))
             {
                 TempData["ToastType"] = "error";
                 TempData["Toast"] = "Cannot delete: this customer has orders.";
                 return RedirectToAction("Index");
             }
             _db.Customers.Remove(customer);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             TempData["Toast"] = "Customer removed!";
             return RedirectToAction("Index");
         }
