@@ -16,16 +16,16 @@ namespace AutoPartsManagementSystem.Controllers
         }
 
         
-        public IActionResult Index()
+        public async  Task<IActionResult> Index()
         {
-            return View(_db.Categories.Include(c => c.Products).ToList());
+            return View(await _db.Categories.Include(c => c.Products).ToListAsync());
         }
 
         [HttpPost,ValidateAntiForgeryToken]
-        public IActionResult Create(Category category)
+        public async Task<IActionResult> Create(Category category)
         {
             category.Name = category.Name?.Trim() ?? "";
-            if (_db.Categories.Any(c => c.Name == category.Name))
+            if (await _db.Categories.AnyAsync(c => c.Name == category.Name))
             {
                 TempData["ToastType"] = "error";
                 TempData["Toast"] = "This category name already exists!";
@@ -38,15 +38,15 @@ namespace AutoPartsManagementSystem.Controllers
                 return RedirectToAction("Index");
             }
             _db.Categories.Add(category);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             TempData["Toast"] = "Category added";
             return RedirectToAction("Index");
         }
 
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var category = _db.Categories.Find(id);
+            var category = await _db.Categories.FindAsync(id);
             if (category == null)
             {
                 return NotFound();
@@ -56,14 +56,14 @@ namespace AutoPartsManagementSystem.Controllers
         }
 
         [HttpPost,ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Category category)
+        public async Task<IActionResult> Edit(int id, Category category)
         {
             category.Name = category.Name?.Trim() ?? "";
             if (id != category.Id)
             {
                 return NotFound();
             }
-            if ((_db.Categories.Any(c => c.Name == category.Name && c.Id != category.Id)))
+            if ((await _db.Categories.AnyAsync(c => c.Name == category.Name && c.Id != category.Id)))
             {
                 
                 ModelState.AddModelError(nameof(Category.Name), "This category name already exists!");
@@ -74,30 +74,31 @@ namespace AutoPartsManagementSystem.Controllers
                 return View(category);
             }
             _db.Categories.Update(category);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
             TempData["Toast"] = "Category updated.";
             return RedirectToAction("Index");
         }
 
 
         [HttpPost, ValidateAntiForgeryToken]
-        public IActionResult Delete(int id)
+        public async  Task<IActionResult> Delete(int id)
         {
-            var category = _db.Categories.Find(id);
+            var category = await _db.Categories.FindAsync(id);
             if (category == null)
             {
                 return NotFound();
             }
-            if (_db.Products.Any(p => p.CategoryId == id))
+            if (await _db.Products.AnyAsync(p => p.CategoryId == id))
             {
                 TempData["ToastType"] = "error";      
                 TempData["Toast"] = "Cannot delete: this category has products.";
                 return RedirectToAction("Index");
             }
             _db.Categories.Remove(category);
-            _db.SaveChanges();
-            
-            
+            await _db.SaveChangesAsync();
+
+
+
             return RedirectToAction("Index");
         }
     }
